@@ -6,17 +6,17 @@ public class Rating {
     private int ratingId;
     private int bathroomId;
     private int userId;
-    private int rating_value;
+    private int rating;
     private String comment;
 
     public Rating() {
     }
 
-    public Rating(int ratingId, int bathroomId, int userId, int rating_value, String comment) {
+    public Rating(int ratingId, int bathroomId, int userId, int rating, String comment) {
         this.ratingId = ratingId;
         this.bathroomId = bathroomId;
         this.userId = userId;
-        this.rating_value = rating_value;
+        this.rating = rating;
         this.comment = comment;
     }
 
@@ -44,12 +44,12 @@ public class Rating {
         this.userId = userId;
     }
 
-    public int getRating_value() {
-        return rating_value;
+    public int getRating() {
+        return rating;
     }
 
-    public void setRating_value(int rating_value) {
-        this.rating_value = rating_value;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public String getComment() {
@@ -64,12 +64,12 @@ public class Rating {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Rating rating = (Rating) o;
-        return ratingId == rating.ratingId && bathroomId == rating.bathroomId && userId == rating.userId && rating_value == rating.rating_value && Objects.equals(comment, rating.comment);
+        Rating rating1 = (Rating) o;
+        return ratingId == rating1.ratingId && bathroomId == rating1.bathroomId && userId == rating1.userId && rating == rating1.rating && Objects.equals(comment, rating1.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ratingId, bathroomId, userId, rating_value, comment);
+        return Objects.hash(ratingId, bathroomId, userId, rating, comment);
     }
 }

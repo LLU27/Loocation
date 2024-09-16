@@ -45,10 +45,10 @@ CREATE TABLE address (
 
 -- Create the rating table
 CREATE TABLE rating (
-  id INT PRIMARY KEY AUTO_INCREMENT,
+  rating_id INT PRIMARY KEY AUTO_INCREMENT,
   bathroom_id INT,
   user_id INT,
-  rating_value INT NOT NULL CHECK (rating_value BETWEEN 1 AND 5), -- Checking for a 1-5 rating scale
+  rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5), -- Checking for a 1-5 rating scale
   comment TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (bathroom_id) REFERENCES bathroom(bathroom_id),
