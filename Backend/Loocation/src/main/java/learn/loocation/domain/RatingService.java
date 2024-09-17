@@ -29,6 +29,17 @@ public class RatingService {
             return result;
         }
 
+        if (rating.getUserId() <= 0) {
+            result.addMessage("userId must be provided and valid", ResultType.INVALID);
+            return result;
+        }
+
+        if (rating.getBathroomId() <= 0) {
+            result.addMessage("bathroomId must be provided and valid", ResultType.INVALID);
+            return result;
+        }
+
+
         rating = repository.addRating(rating);
         result.setPayload(rating);
         return result;
