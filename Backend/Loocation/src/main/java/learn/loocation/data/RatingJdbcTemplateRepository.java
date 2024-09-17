@@ -5,9 +5,10 @@ import learn.loocation.models.Rating;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-
+@Repository
 public class RatingJdbcTemplateRepository implements RatingRepository {
     private final JdbcTemplate jdbcTemplate;
 

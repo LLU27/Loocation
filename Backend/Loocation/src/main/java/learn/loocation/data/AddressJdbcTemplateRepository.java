@@ -5,10 +5,12 @@ import learn.loocation.models.Address;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
+@Repository
 public class AddressJdbcTemplateRepository implements AddressRepository {
     private final JdbcTemplate jdbcTemplate;
 

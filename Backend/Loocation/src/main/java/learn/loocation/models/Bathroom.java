@@ -1,7 +1,5 @@
 package learn.loocation.models;
 
-import java.util.Objects;
-
 public class Bathroom {
     private int bathroomId;
     private String name;
@@ -60,16 +58,4 @@ public class Bathroom {
         this.unisex = unisex;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bathroom bathroom = (Bathroom) o;
-        return bathroomId == bathroom.bathroomId && accessibility == bathroom.accessibility && changing_station == bathroom.changing_station && unisex == bathroom.unisex && Objects.equals(name, bathroom.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(bathroomId, name, accessibility, changing_station, unisex);
-    }
 }
