@@ -17,13 +17,13 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAllUsers() {
         final String sql = "select * from user";
         return jdbcTemplate.query(sql, new UserMapper());
     }
 
     @Override
-    public User findById(int userId) {
+    public User findUserById(int userId) {
         final String sql = "select * from user where user_id = ?";
         return jdbcTemplate.query(sql, new UserMapper(), userId)
                 .stream()
@@ -32,7 +32,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
     @Override
-    public User add(User user) {
+    public User addUser(User user) {
         final String sql = "insert into user (username, email, password) values (?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {

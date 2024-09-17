@@ -5,9 +5,9 @@ import learn.loocation.models.User;
 import java.util.List;
 
 public interface UserRepository {
-    List<User> findAll();
+    List<User> findAllUsers();
 
-    User findById(int userId);
+    User findUserById(int userId);
 
-    User add(User user);
+    User addUser(User user);
 }

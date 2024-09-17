@@ -5,13 +5,13 @@ import learn.loocation.models.Bathroom;
 import java.util.List;
 
 public interface BathroomRepository {
-    List<Bathroom> findAll();
+    List<Bathroom> findAllBathrooms();
 
-    Bathroom findById(int bathroomId);
+    Bathroom findBathroomById(int bathroomId);
 
-    Bathroom add(Bathroom bathroom);
+    Bathroom addBathroom(Bathroom bathroom);
 
-    boolean update(Bathroom bathroom);
+    boolean updateBathroom(Bathroom bathroom);
 
-    boolean deleteById(int bathroomId);
+    boolean deleteBathroomById(int bathroomId);
 }

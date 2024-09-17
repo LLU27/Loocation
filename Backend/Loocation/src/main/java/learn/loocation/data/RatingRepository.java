@@ -3,10 +3,10 @@ package learn.loocation.data;
 import learn.loocation.models.Rating;
 
 public interface RatingRepository {
-    Rating add(Rating rating);
+    Rating addRating(Rating rating);
 
-    boolean update(Rating rating);
+    boolean updateRating(Rating rating);
 
-    Rating findById(int ratingId);
+    Rating findByRatingId(int ratingId);
 
 }

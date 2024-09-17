@@ -3,11 +3,11 @@ package learn.loocation.data;
 import learn.loocation.models.Address;
 
 public interface AddressRepository {
-    Address findById(int addressId);
+    Address findAddressById(int addressId);
 
-    Address add(Address address);
+    Address addAddress(Address address);
 
-    boolean update(Address address);
+    boolean updateAddress(Address address);
 
-    boolean deleteById(int addressId);
+    boolean deleteAddressById(int addressId);
 }
