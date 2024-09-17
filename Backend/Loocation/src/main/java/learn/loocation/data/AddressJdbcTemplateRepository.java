@@ -30,7 +30,7 @@ public class AddressJdbcTemplateRepository implements AddressRepository {
 
     @Override
     public Address addAddress(Address address) {
-        final String sql = "insert into address ( street, city, state, postal_code) values (?,?,?,?)";
+        final String sql = "insert into address ( street, city, state, postal_code, latitude, longitude) values (?,?,?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -38,6 +38,8 @@ public class AddressJdbcTemplateRepository implements AddressRepository {
             ps.setString(2, address.getCity());
             ps.setString(3, address.getState());
             ps.setString(4, address.getPostalCode());
+            ps.setDouble(5, address.getLatitude());
+            ps.setDouble(6, address.getLongitude());
             return ps;
         },keyHolder);
         if (rowsAffected <= 0) {
@@ -49,8 +51,15 @@ public class AddressJdbcTemplateRepository implements AddressRepository {
 
     @Override
     public boolean updateAddress(Address address) {
-        final String sql = "update address set street = ?, city = ?, state = ?, postal_code = ? where address_id = ?";
-        return jdbcTemplate.update(sql, address.getStreet(), address.getCity(), address.getState(), address.getPostalCode(), address.getAddressId()) > 0;
+        final String sql = "update address set street = ?, city = ?, state = ?, postal_code = ?, latitude = ?, longitude = ? where address_id = ?";
+        return jdbcTemplate.update(sql,
+                address.getStreet(),
+                address.getCity(),
+                address.getState(),
+                address.getPostalCode(),
+                address.getLatitude(),
+                address.getLongitude(),
+                address.getAddressId()) > 0;
     }
 
     @Override

@@ -18,6 +18,8 @@ CREATE TABLE bathroom (
   accessibility BOOLEAN NOT NULL,
   changing_station BOOLEAN NOT NULL,
   unisex BOOLEAN NOT NULL
+  address_id INT,
+    FOREIGN KEY (address_id) REFERENCES address(address_id)
 );
 
 -- Create the user_bathroom join table
@@ -39,8 +41,6 @@ CREATE TABLE address (
   zipcode VARCHAR(20) NOT NULL,
   latitude DECIMAL(9, 6),
   longitude DECIMAL(9, 6),
-  bathroom_id INT,
-  FOREIGN KEY (bathroom_id) REFERENCES bathroom(bathroom_id)
 );
 
 -- Create the rating table

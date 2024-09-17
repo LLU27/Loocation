@@ -1,5 +1,6 @@
 package learn.loocation.domain;
 
+import learn.loocation.data.AddressRepository;
 import learn.loocation.data.BathroomRepository;
 import learn.loocation.models.Address;
 import learn.loocation.models.Bathroom;
@@ -11,9 +12,12 @@ import java.util.List;
 public class BathroomService {
 
     private final BathroomRepository repository;
+    private final AddressRepository addressRepository;
 
-    public BathroomService(BathroomRepository repository) {
+    public BathroomService(BathroomRepository repository,
+                           AddressRepository addressRepository, AddressRepository addressRepository1) {
         this.repository = repository;
+        this.addressRepository = addressRepository1;
     }
 
     public List<Bathroom> findAllBathrooms() {
@@ -24,7 +28,7 @@ public class BathroomService {
         return repository.findBathroomById(bathroomId);
     }
 
-    public Result<Bathroom> add(Bathroom bathroom) {
+    public Result<Bathroom> addBathroom(Bathroom bathroom) {
         Result<Bathroom> result = validate(bathroom);
         if (!result.isSuccess()) {
             return result;
@@ -35,12 +39,22 @@ public class BathroomService {
             return result;
         }
 
+        Address address = bathroom.getAddress();
+        Address existingAddress = addressRepository.findAddressById(address.getAddressId());
+
+        if (existingAddress != null) {
+            address.setAddressId(existingAddress.getAddressId());
+        } else {
+            Address addedAddress = addressRepository.addAddress(address);
+            bathroom.setAddress(addedAddress);
+        }
+
         bathroom = repository.addBathroom(bathroom);
         result.setPayload(bathroom);
         return result;
     }
 
-    public Result<Bathroom> update(Bathroom bathroom) {
+    public Result<Bathroom> updateBathroom(Bathroom bathroom) {
         Result<Bathroom> result = validate(bathroom);
         if (!result.isSuccess()) {
             return result;

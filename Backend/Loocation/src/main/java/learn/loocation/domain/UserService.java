@@ -23,7 +23,7 @@ public class UserService {
         return repository.findAllUsers();
     }
 
-    public Result<User> add(User user) {
+    public Result<User> addUser(User user) {
         Result<User> result = validate(user);
         if (!result.isSuccess()) {
             return result;

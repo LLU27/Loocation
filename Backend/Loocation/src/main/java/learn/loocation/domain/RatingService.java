@@ -18,7 +18,7 @@ public class RatingService {
         return repository.findByRatingId(ratingId);
     }
 
-    public Result<Rating> add(Rating rating) {
+    public Result<Rating> addRating(Rating rating) {
         Result<Rating> result = validate(rating);
         if (!result.isSuccess()) {
             return result;
@@ -34,7 +34,7 @@ public class RatingService {
         return result;
     }
 
-    public Result<Rating> update(Rating rating) {
+    public Result<Rating> updateRating(Rating rating) {
         Result<Rating> result = validate(rating);
         if (!result.isSuccess()) {
             return result;
