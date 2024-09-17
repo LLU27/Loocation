@@ -38,7 +38,7 @@ public class UserService {
         result.setPayload(user);
         return result;
     }
-    
+
 
     private Result<User> validate(User user) {
         Result<User> result = new Result<>();
