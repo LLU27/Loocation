@@ -4,32 +4,11 @@ CREATE DATABASE loocation;
 USE loocation;
 
 -- Create the user table
-CREATE TABLE `user` (
+CREATE TABLE user (
   user_id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(30) NOT NULL,
   email VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(50) NOT NULL
-);
-
--- Create the bathroom table
-CREATE TABLE bathroom (
-  bathroom_id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  accessibility BOOLEAN NOT NULL,
-  changing_station BOOLEAN NOT NULL,
-  unisex BOOLEAN NOT NULL
-  address_id INT,
-    FOREIGN KEY (address_id) REFERENCES address(address_id)
-);
-
--- Create the user_bathroom join table
-CREATE TABLE user_bathroom (
-  user_bathroom_id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT,
-  bathroom_id INT,
-  FOREIGN KEY (user_id) REFERENCES user(user_id),
-  FOREIGN KEY (bathroom_id) REFERENCES bathroom(bathroom_id),
-  UNIQUE (user_id, bathroom_id)  -- Ensures that a user can only be linked to a bathroom once
 );
 
 -- Create the address table
@@ -40,8 +19,29 @@ CREATE TABLE address (
   state VARCHAR(100) NOT NULL,
   zipcode VARCHAR(20) NOT NULL,
   latitude DECIMAL(9, 6),
-  longitude DECIMAL(9, 6),
+  longitude DECIMAL(9, 6)
 );
+
+-- Create the bathroom table
+CREATE TABLE bathroom (
+  bathroom_id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  accessibility BOOLEAN NOT NULL,
+  changing_station BOOLEAN NOT NULL,
+  unisex BOOLEAN NOT NULL,
+  address_id INT,
+	FOREIGN KEY (address_id) REFERENCES address(address_id)
+);
+
+-- Create the user_bathroom join table
+CREATE TABLE user_bathroom (
+  user_id INT,
+  bathroom_id INT,
+  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  FOREIGN KEY (bathroom_id) REFERENCES bathroom(bathroom_id),
+PRIMARY KEY (user_id, bathroom_id)
+);
+
 
 -- Create the rating table
 CREATE TABLE rating (
