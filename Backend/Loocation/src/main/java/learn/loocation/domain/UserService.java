@@ -32,7 +32,7 @@ public class UserService {
         if (user.getUserId() != 0) {
             result.addMessage("userId cannot be set for `add` operation", ResultType.INVALID);
             return result;
-        }
+        } http://localhost:5173/
 
         user = repository.addUser(user);
         result.setPayload(user);
