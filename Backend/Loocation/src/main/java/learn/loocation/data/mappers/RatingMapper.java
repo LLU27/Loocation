@@ -12,7 +12,7 @@ public class RatingMapper implements RowMapper<Rating> {
         rating.setRatingId(rs.getInt("rating_id"));
         rating.setBathroomId(rs.getInt("bathroom_id"));
         rating.setUserId(rs.getInt("user_id"));
-        rating.setRating(rs.getInt("rating_value"));
+        rating.setRating(rs.getInt("rating"));
         rating.setComment(rs.getString("comment"));
         return rating;
     }

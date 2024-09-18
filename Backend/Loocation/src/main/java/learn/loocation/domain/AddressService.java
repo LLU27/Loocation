@@ -83,7 +83,7 @@ public class AddressService {
             result.addMessage("State is required", ResultType.INVALID);
         }
 
-        if (Validations.isNullOrBlank(address.getPostalCode())) {
+        if (Validations.isNullOrBlank(address.getZipCode())) {
             result.addMessage("Postal Code is required", ResultType.INVALID);
         }
 

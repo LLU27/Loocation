@@ -1,7 +1,5 @@
 package learn.loocation.domain;
-
 import learn.loocation.data.RatingRepository;
-import learn.loocation.models.Bathroom;
 import learn.loocation.models.Rating;
 import org.springframework.stereotype.Service;
 

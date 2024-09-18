@@ -1,6 +1,5 @@
 package learn.loocation.models;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Address {
@@ -8,19 +7,19 @@ public class Address {
     private String street;
     private String city;
     private String state;
-    private String postalCode;
+    private String zipCode;
     private double latitude;
     private double longitude;
 
     public Address() {
     }
 
-    public Address(int addressId, String street, String city, String state, String postalCode, double latitude, double longitude) {
+    public Address(int addressId, String street, String city, String state, String zipCode, double latitude, double longitude) {
         this.addressId = addressId;
         this.street = street;
         this.city = city;
         this.state = state;
-        this.postalCode = postalCode;
+        this.zipCode = zipCode;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -57,12 +56,12 @@ public class Address {
         this.state = state;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public double getLatitude() {
@@ -86,11 +85,11 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return addressId == address.addressId && Double.compare(latitude, address.latitude) == 0 && Double.compare(longitude, address.longitude) == 0 && Objects.equals(street, address.street) && Objects.equals(city, address.city) && Objects.equals(state, address.state) && Objects.equals(postalCode, address.postalCode);
+        return addressId == address.addressId && Double.compare(latitude, address.latitude) == 0 && Double.compare(longitude, address.longitude) == 0 && Objects.equals(street, address.street) && Objects.equals(city, address.city) && Objects.equals(state, address.state) && Objects.equals(zipCode, address.zipCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(addressId, street, city, state, postalCode, latitude, longitude);
+        return Objects.hash(addressId, street, city, state, zipCode, latitude, longitude);
     }
 }

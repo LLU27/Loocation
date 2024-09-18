@@ -30,14 +30,14 @@ public class AddressJdbcTemplateRepository implements AddressRepository {
 
     @Override
     public Address addAddress(Address address) {
-        final String sql = "insert into address ( street, city, state, postal_code, latitude, longitude) values (?,?,?,?,?,?)";
+        final String sql = "insert into address ( street, city, state, zipcode, latitude, longitude) values (?,?,?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, address.getStreet());
             ps.setString(2, address.getCity());
             ps.setString(3, address.getState());
-            ps.setString(4, address.getPostalCode());
+            ps.setString(4, address.getZipCode());
             ps.setDouble(5, address.getLatitude());
             ps.setDouble(6, address.getLongitude());
             return ps;
@@ -51,12 +51,12 @@ public class AddressJdbcTemplateRepository implements AddressRepository {
 
     @Override
     public boolean updateAddress(Address address) {
-        final String sql = "update address set street = ?, city = ?, state = ?, postal_code = ?, latitude = ?, longitude = ? where address_id = ?";
+        final String sql = "update address set street = ?, city = ?, state = ?, zipcode = ?, latitude = ?, longitude = ? where address_id = ?";
         return jdbcTemplate.update(sql,
                 address.getStreet(),
                 address.getCity(),
                 address.getState(),
-                address.getPostalCode(),
+                address.getZipCode(),
                 address.getLatitude(),
                 address.getLongitude(),
                 address.getAddressId()) > 0;
@@ -64,7 +64,14 @@ public class AddressJdbcTemplateRepository implements AddressRepository {
 
     @Override
     public boolean deleteAddressById(int addressId) {
-        final String sql = "delete from address where address_id = ?";
-        return jdbcTemplate.update(sql, addressId) > 0;
+        final String deleteUserBathroomSql = "delete from user_bathroom where bathroom_id = ?";
+        final String deleteRatingsSql = "delete from rating where bathroom_id = ?";
+        final String deleteBathroomSql = "delete from bathroom where bathroom_id = ?";
+        final String deleteAddressSql = "delete from address where address_id = ?";
+        jdbcTemplate.update(deleteUserBathroomSql, addressId);
+        jdbcTemplate.update(deleteRatingsSql, addressId);
+jdbcTemplate.update(deleteBathroomSql, addressId);
+int rowsAffected = jdbcTemplate.update(deleteAddressSql, addressId);
+return rowsAffected > 0;
     }
 }

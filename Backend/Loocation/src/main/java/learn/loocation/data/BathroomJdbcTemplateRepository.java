@@ -21,7 +21,7 @@ public class BathroomJdbcTemplateRepository implements BathroomRepository {
     @Override
     public List<Bathroom> findAllBathrooms() {
         final String sql = """
-            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.zipcode
+            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.zipcode, a.latitude, a.longitude
             from bathroom b
             inner join address a on b.address_id = a.address_id
             """;
@@ -31,7 +31,7 @@ public class BathroomJdbcTemplateRepository implements BathroomRepository {
     @Override
     public Bathroom findBathroomById(int bathroomId) {
         final String sql = """
-            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.zipcode
+            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.zipcode,  a.latitude, a.longitude 
             from bathroom b
             inner join address a on b.address_id = a.address_id
             where b.bathroom_id = ?;
@@ -64,7 +64,13 @@ public class BathroomJdbcTemplateRepository implements BathroomRepository {
 
     @Override
     public boolean deleteBathroomById(int bathroomId) {
-        final String sql = "delete from bathroom where bathroom_id = ?;";
-        return jdbcTemplate.update(sql, bathroomId) > 0;
+        final String deleteUserBathroomSql = "delete from user_bathroom where bathroom_id = ?";
+        final String deleteRatingsSql = "delete from rating where bathroom_id = ?";
+        final String deleteBathroomSql = "delete from bathroom where bathroom_id = ?";
+        jdbcTemplate.update(deleteUserBathroomSql, bathroomId);
+        jdbcTemplate.update(deleteRatingsSql, bathroomId);
+        int rowsAffected = jdbcTemplate.update(deleteBathroomSql, bathroomId);
+
+        return rowsAffected > 0;
     }
 }

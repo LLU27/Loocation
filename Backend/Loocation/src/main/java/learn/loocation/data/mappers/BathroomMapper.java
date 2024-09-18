@@ -15,7 +15,7 @@ public class BathroomMapper implements RowMapper<Bathroom> {
         address.setStreet(rs.getString("street"));
         address.setCity(rs.getString("city"));
         address.setState(rs.getString("state"));
-        address.setPostalCode(rs.getString("postal_code"));
+        address.setZipCode(rs.getString("zipcode"));
         address.setLatitude(rs.getDouble("latitude"));
         address.setLongitude(rs.getDouble("longitude"));
 

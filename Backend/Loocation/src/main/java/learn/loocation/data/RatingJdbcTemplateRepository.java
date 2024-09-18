@@ -4,11 +4,7 @@ import learn.loocation.data.mappers.RatingMapper;
 import learn.loocation.models.Rating;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 
 @Repository
@@ -50,7 +46,7 @@ public class RatingJdbcTemplateRepository implements RatingRepository {
     @Override
     public boolean updateRating(Rating rating) {
         final String sql = """
-                update rating set rating =?,comments =? where rating_id = ?;
+                update rating set rating =?,comment =? where rating_id = ?;
                 """;
         return jdbcTemplate.update(sql, rating.getRating(), rating.getComment(), rating.getRatingId()) > 0;
     }
