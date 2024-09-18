@@ -15,14 +15,12 @@ public class UserBathroomService {
         this.repository = repository;
     }
 
-    // Add a user-bathroom relationship if it doesn't already exist
     public Result<UserBathroom> addUserBathroom(UserBathroom userBathroom) {
         Result<UserBathroom> result = validate(userBathroom);
         if (!result.isSuccess()) {
             return result;
         }
 
-        // Check if the user already visited this bathroom
         List<UserBathroom> existing = repository.findByUserId(userBathroom.getUserId());
         for (UserBathroom ub : existing) {
             if (ub.getBathroomId() == userBathroom.getBathroomId()) {

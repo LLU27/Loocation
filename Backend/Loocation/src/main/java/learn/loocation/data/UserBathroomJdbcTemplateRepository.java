@@ -3,9 +3,10 @@ package learn.loocation.data;
 import learn.loocation.data.mappers.UserBathroomMapper;
 import learn.loocation.models.UserBathroom;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class UserBathroomJdbcTemplateRepository implements UserBathroomRepository {
     private final JdbcTemplate jdbcTemplate;
 

@@ -17,7 +17,7 @@ public class AddressController {
         this.service = service;
     }
 
-    @GetMapping("{/addressId}")
+    @GetMapping("/{addressId}")
     public Address findAddressById(int addressId) {
         return service.findAddressById(addressId);
     }

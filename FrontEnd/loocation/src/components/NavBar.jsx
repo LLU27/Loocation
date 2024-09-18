@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
@@ -13,9 +12,12 @@ const NavBar = () => {
         </div>
 
         {/* Navigation Links */}
-        <div className='space-x-4'>
+        <div className='space-x-6'>
           <Link to='/' className='hover:text-gray-400'>
             Home
+          </Link>
+          <Link to='/bathrooms' className='hover:text-gray-400'>
+            Bathrooms
           </Link>
           <Link to='/about' className='hover:text-gray-400'>
             About
