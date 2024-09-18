@@ -87,6 +87,14 @@ public class AddressService {
             result.addMessage("Postal Code is required", ResultType.INVALID);
         }
 
+        if (address.getLatitude() == 0) {
+            result.addMessage("Latitude is required", ResultType.INVALID);
+        }
+
+        if (address.getLongitude() == 0) {
+            result.addMessage("Longitude is required", ResultType.INVALID);
+        }
+
         return result;
     }
 }
