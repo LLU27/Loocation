@@ -28,6 +28,13 @@ class RatingServiceTest {
     }
 
     @Test
+    void shouldNotFindRatingById() {
+        when(repository.findByRatingId(0)).thenReturn(null);
+        Rating actual = service.findRatingById(0);
+        assertNull(actual);
+    }
+
+    @Test
     void shouldAddRating() {
         Rating expected = new Rating(1, 1, 1, 5, "Great place to visit");
         Rating actual = new Rating(0, 1, 1, 5, "Great place to visit");
