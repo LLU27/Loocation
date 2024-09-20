@@ -5,7 +5,8 @@ import Home from './view/Home';
 import About from './view/About';
 import Bathrooms from './view/Bathrooms';
 import Login from './view/Login';
-import Signup from './view/Signup';
+import SignUp from './view/SignUp';
+import BathroomDetail from './view/BathroomDetail';
 
 const App = () => {
   const [bathrooms, setBathrooms] = useState([]);
@@ -44,9 +45,13 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home onLooAround={handleLooAround} loading={loading} setLoading={setLoading} />} />
         <Route path='/about' element={<About />} />
-        <Route path='/bathrooms' element={<Bathrooms bathrooms={bathrooms} />} />
+        <Route
+          path='/bathrooms'
+          element={<Bathrooms bathrooms={bathrooms} onLooAround={handleLooAround} loading={loading} setLoading={setLoading} />}
+        />
+        <Route path='/bathroom/:id' element={<BathroomDetail />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
+        <Route path='/signup' element={<SignUp />} />
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
       {error && <p className='text-red-500'>{error}</p>}

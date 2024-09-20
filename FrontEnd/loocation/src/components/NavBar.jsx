@@ -28,7 +28,7 @@ const NavBar = () => {
         </div>
 
         {/* Authentication Links */}
-        <div className='space-x-4 w-1/3 flex justify-end'>
+        <div className='space-x-4 w-1/3 flex justify-end items-center'>
           {user ? (
             <>
               <span className='text-white'>Hi, {user}</span>

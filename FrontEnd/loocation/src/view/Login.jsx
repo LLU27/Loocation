@@ -6,7 +6,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const { login } = useAuth(); // Get login function from context
+  const { login } = useAuth(); 
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
@@ -14,7 +14,6 @@ const Login = () => {
 
     try {
       const response = await fetch('http://localhost:8080/api/user/login', {
-        // Adjust the URL as needed
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
