@@ -17,7 +17,7 @@ public class UserBathroomController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/add/bathroomId/{bathroomId}/userId/{userId}")
     public ResponseEntity<Object> add(@RequestBody UserBathroom userBathroom) {
         Result<UserBathroom> result = service.addUserBathroom(userBathroom);
         if (result.isSuccess()) {

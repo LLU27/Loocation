@@ -6,7 +6,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const { login } = useAuth(); 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
@@ -26,8 +26,8 @@ const Login = () => {
       }
 
       const data = await response.json();
-      login(data.username); 
-      navigate('/'); 
+      login(data.username);
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }

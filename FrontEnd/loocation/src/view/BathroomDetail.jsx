@@ -5,14 +5,33 @@ import { BiAccessibility } from 'react-icons/bi';
 import { useAuth } from '../components/AuthContext';
 
 const BathroomDetail = () => {
-  const { id } = useParams();
+  const { bathroomId } = useParams();
   const location = useLocation();
   const { user } = useAuth(); // Get the user from context
-
+  console.log(user);
   const bathroom = location.state;
-  const handleAddToList = () => {
-    // Logic to add the bathroom to the user's list
-    console.log(`Added bathroom with ID: ${id}`);
+
+  const handleAddToList = async () => {
+    try {
+      const response = await fetch(`/add/bathroomId/${bathroomId}/userId/${user.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          bathroomId: id,
+          userId: user.id,
+        }),
+      });
+
+      if (response.ok) {
+        console.log(`Bathroom with ID: ${id} added to user ID: ${user.id}'s list`);
+      } else {
+        console.error('Failed to add bathroom to the list');
+      }
+    } catch (error) {
+      console.error('Error while adding bathroom:', error);
+    }
   };
 
   return (
