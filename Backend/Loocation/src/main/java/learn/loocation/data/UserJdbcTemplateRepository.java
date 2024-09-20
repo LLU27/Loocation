@@ -51,4 +51,13 @@ public class UserJdbcTemplateRepository implements UserRepository {
         user.setUserId(keyHolder.getKey().intValue());
         return user;
     }
+
+    @Override
+    public User findUserByEmail(String email) {
+        final String sql = "select * from user where email = ?";
+        return jdbcTemplate.query(sql, new UserMapper(), email)
+                .stream()
+                .findFirst()
+                .orElse(null);
+    }
 }

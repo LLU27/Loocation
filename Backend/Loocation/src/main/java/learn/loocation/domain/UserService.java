@@ -39,6 +39,30 @@ public class UserService {
         return result;
     }
 
+    public Result<User> loginUser(User user) {
+        Result<User> result = new Result<>();
+        if (user == null) {
+            result.addMessage("user cannot be null", ResultType.INVALID);
+            return result;
+        }
+        if(Validations.isNullOrBlank(user.getEmail())) {
+            result.addMessage("email is required", ResultType.INVALID);
+        }
+        if(Validations.isNullOrBlank(user.getPassword())) {
+            result.addMessage("password is required", ResultType.INVALID);
+        }
+        User existing = repository.findUserByEmail(user.getEmail());
+        if (existing == null) {
+            result.addMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        if (!existing.getPassword().equals(user.getPassword())) {
+            result.addMessage("Password is incorrect", ResultType.INVALID);
+            return result;
+        }
+        result.setPayload(existing);
+        return result;
+    }
 
     private Result<User> validate(User user) {
         Result<User> result = new Result<>();
@@ -58,4 +82,6 @@ public class UserService {
         }
         return result;
     }
+
+
 }

@@ -1,28 +1,64 @@
 import { useState } from 'react';
-const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/AuthContext';
 
-  const handleSubmit = e => {
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const { login } = useAuth(); // Get login function from context
+  const navigate = useNavigate();
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log('Username:', username);
-    console.log('Password:', password);
+
+    try {
+      const response = await fetch('http://localhost:8080/api/user/login', {
+        // Adjust the URL as needed
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+
+      const data = await response.json();
+      login(data.username); 
+      navigate('/'); 
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type='password' value={password} onChange={e => setPassword(e.target.value)} />
-        </div>
-        <button type='submit'>Login</button>
-      </form>
+    <div className='flex items-center justify-center min-h-screen bg-gray-200'>
+      <div className='p-6 bg-gray-800 rounded-lg shadow-md max-w-sm w-full'>
+        <h2 className='text-3xl font-bold mb-4 text-center'>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className='mb-4'>
+            <label className='block mb-1'>Email:</label>
+            <input type='email' value={email} onChange={e => setEmail(e.target.value)} className='input input-bordered w-full' required />
+          </div>
+          <div className='mb-4'>
+            <label className='block mb-1'>Password:</label>
+            <input type='password' value={password} onChange={e => setPassword(e.target.value)} className='input input-bordered w-full' required />
+          </div>
+          {error && <p className='text-red-500'>{error}</p>}
+          <button type='submit' className='btn btn-primary w-full text-white mt-4'>
+            Login
+          </button>
+        </form>
+        <p className='mt-4 text-center'>
+          Don’t have an account?{' '}
+          <Link to='/signup' className='text-blue-500 hover:underline'>
+            Sign Up
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

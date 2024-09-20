@@ -29,11 +29,20 @@ public class UserController {
         return service.findUserById(userId);
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Object> addUser(@RequestBody User user) {
         Result<User> result = service.addUser(user);
         if(result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+        }
+        return ErrorResponse.build(result);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginUser(@RequestBody User user) {
+        Result<User> result = service.loginUser(user);
+        if(result.isSuccess()) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.OK);
         }
         return ErrorResponse.build(result);
     }
