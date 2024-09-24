@@ -21,7 +21,7 @@ public class BathroomJdbcTemplateRepository implements BathroomRepository {
     @Override
     public List<Bathroom> findAllBathrooms() {
         final String sql = """
-            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.zipcode, a.latitude, a.longitude
+            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.latitude, a.longitude
             from bathroom b
             inner join address a on b.address_id = a.address_id
             """;
@@ -31,12 +31,23 @@ public class BathroomJdbcTemplateRepository implements BathroomRepository {
     @Override
     public Bathroom findBathroomById(int bathroomId) {
         final String sql = """
-            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.zipcode,  a.latitude, a.longitude 
+            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state,  a.latitude, a.longitude 
             from bathroom b
             inner join address a on b.address_id = a.address_id
             where b.bathroom_id = ?;
             """;
         return jdbcTemplate.query(sql, new BathroomMapper(), bathroomId).stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public Bathroom findByAddressId(int addressId) {
+        final String sql = """
+            select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.latitude, a.longitude
+            from bathroom b
+            inner join address a on b.address_id = a.address_id
+            where a.address_id = ?;
+            """;
+        return jdbcTemplate.query(sql, new BathroomMapper(), addressId).stream().findFirst().orElse(null);
     }
 
     @Override

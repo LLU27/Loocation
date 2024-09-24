@@ -17,11 +17,23 @@ public class AddressService {
         return repository.findAddressById(addressId);
     }
 
+    public Address findByLatLong(double latitude, double longitude) {
+        return repository.findByLatLong(latitude, longitude);
+    }
+
+
     public Result<Address> addAddress(Address address) {
         Result<Address> result = validate(address);
         if (!result.isSuccess()) {
             return result;
         }
+
+        Address existing = repository.findByLatLong(address.getLatitude(), address.getLongitude());
+        if (existing != null) {
+            result.setPayload(existing);
+            return result;
+        }
+
         if (address.getAddressId() != 0) {
             result.addMessage("addressId cannot be set for `add` operation", ResultType.INVALID);
             return result;
@@ -83,9 +95,6 @@ public class AddressService {
             result.addMessage("State is required", ResultType.INVALID);
         }
 
-        if (Validations.isNullOrBlank(address.getZipCode())) {
-            result.addMessage("Postal Code is required", ResultType.INVALID);
-        }
 
         if (address.getLatitude() == 0) {
             result.addMessage("Latitude is required", ResultType.INVALID);
@@ -96,5 +105,9 @@ public class AddressService {
         }
 
         return result;
+    }
+
+    public Address findAddressByStreet(String street) {
+        return repository.findAddressByStreet(street);
     }
 }

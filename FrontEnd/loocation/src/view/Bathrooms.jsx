@@ -60,7 +60,6 @@ const Bathrooms = ({ bathrooms, onLooAround, loading, setLoading }) => {
             </label>
           </div>
 
-          {/* Display filtered bathrooms */}
           <div className='grid grid-cols-1 gap-4 p-4 mt-6 max-w-4xl'>
             {filteredBathrooms.map((bathroom, index) => (
               <BathroomCard

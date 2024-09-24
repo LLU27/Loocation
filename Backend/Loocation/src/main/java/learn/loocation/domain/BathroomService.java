@@ -28,9 +28,19 @@ public class BathroomService {
         return repository.findBathroomById(bathroomId);
     }
 
+    public Bathroom findByAddressId(int addressId) {
+        return repository.findByAddressId(addressId);
+    }
+
     public Result<Bathroom> addBathroom(Bathroom bathroom) {
         Result<Bathroom> result = validate(bathroom);
         if (!result.isSuccess()) {
+            return result;
+        }
+
+        Bathroom existingBathroom = repository.findByAddressId(bathroom.getAddress().getAddressId());
+        if (existingBathroom != null) {
+            result.setPayload(existingBathroom);
             return result;
         }
 
@@ -40,10 +50,10 @@ public class BathroomService {
         }
 
         Address address = bathroom.getAddress();
-        Address existingAddress = addressRepository.findAddressById(address.getAddressId());
+        Address existingAddress = addressRepository.findByLatLong(address.getLatitude(), address.getLongitude());
 
         if (existingAddress != null) {
-            address.setAddressId(existingAddress.getAddressId());
+            bathroom.setAddress(existingAddress);
         } else {
             Address addedAddress = addressRepository.addAddress(address);
             bathroom.setAddress(addedAddress);

@@ -19,19 +19,19 @@ class AddressServiceTest {
 
     @Test
     void shouldFindAddressId1() {
-        Address expected = new Address('1', "123 Test St", "Test City", "TS", "12345", 43, 43);
+        Address expected = new Address('1', "123 Test St", "Test City", "TS", 43, 43);
         when(repository.findAddressById(1)).thenReturn(expected);
     }
     @Test
     void shouldNotFindAddressId0() {
-        Address expected = new Address('1', "123 Test St", "Test City", "TS", "12345", 43, 43);
+        Address expected = new Address('1', "123 Test St", "Test City", "TS", 43, 43);
         when(repository.findAddressById(0)).thenReturn(null);
     }
 
     @Test
     void shouldAddAddress() {
-        Address expected = new Address(0, "123 Test St", "Test City", "TS", "12345", 43, 43);
-        Address actual = new Address(1, "123 Test St", "Test City", "TS", "12345", 43, 43);
+        Address expected = new Address(0, "123 Test St", "Test City", "TS", 43, 43);
+        Address actual = new Address(1, "123 Test St", "Test City", "TS", 43, 43);
         when(repository.addAddress(expected)).thenReturn(actual);
         Result<Address> result = service.addAddress(expected);
         assertEquals(ResultType.SUCCESS, result.getType());
@@ -48,49 +48,44 @@ class AddressServiceTest {
 
     @Test
     void shouldNotAddEmpty() {
-        Address address = new Address(0, "", "", "", "", 0, 0);
+        Address address = new Address(0, "", "", "", 0, 0);
         Result<Address> result = service.addAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotAddNullStreet() {
-        Address address = new Address(0, null, "Test City", "TS", "12345", 43, 43);
+        Address address = new Address(0, null, "Test City", "TS", 43, 43);
         Result<Address> result = service.addAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotAddNullCity() {
-        Address address = new Address(0, "123 Test St", null, "TS", "12345", 43, 43);
+        Address address = new Address(0, "123 Test St", null, "TS",  43, 43);
         Result<Address> result = service.addAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotAddNullState() {
-        Address address = new Address(0, "123 Test St", "Test City", null, "12345", 43, 43);
+        Address address = new Address(0, "123 Test St", "Test City", null, 43, 43);
         Result<Address> result = service.addAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
-    @Test
-    void shouldNotAddNullZipCode() {
-        Address address = new Address(0, "123 Test St", "Test City", "TS", null, 43, 43);
-        Result<Address> result = service.addAddress(address);
-        assertEquals(ResultType.INVALID, result.getType());
-    }
+
 
     @Test
     void shouldNotAddNullLatitude() {
-        Address address = new Address(0, "123 Test St", "Test City", "TS", "12345", 0, 43);
+        Address address = new Address(0, "123 Test St", "Test City", "TS", 0, 43);
         Result<Address> result = service.addAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotAddNullLongitude() {
-        Address address = new Address(0, "123 Test St", "Test City", "TS", "12345", 43, 0);
+        Address address = new Address(0, "123 Test St", "Test City", "TS", 43, 0);
         Result<Address> result = service.addAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
@@ -111,56 +106,50 @@ class AddressServiceTest {
 
     @Test
     void shouldNotUpdateEmpty() {
-        Address address = new Address(0, "", "", "", "", 0, 0);
+        Address address = new Address(0, "", "", "", 0, 0);
         Result<Address> result = service.updateAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotUpdateNullStreet() {
-        Address address = new Address(0, null, "Test City", "TS", "12345", 43, 43);
+        Address address = new Address(0, null, "Test City", "TS", 43, 43);
         Result<Address> result = service.updateAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotUpdateNullCity() {
-        Address address = new Address(0, "123 Test St", null, "TS", "12345", 43, 43);
+        Address address = new Address(0, "123 Test St", null, "TS", 43, 43);
         Result<Address> result = service.updateAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotUpdateNullState() {
-        Address address = new Address(0, "123 Test St", "Test City", null, "12345", 43, 43);
+        Address address = new Address(0, "123 Test St", "Test City", null, 43, 43);
         Result<Address> result = service.updateAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
-    @Test
-    void shouldNotUpdateNullZipCode() {
-        Address address = new Address(0, "123 Test St", "Test City", "TS", null, 43, 43);
-        Result<Address> result = service.updateAddress(address);
-        assertEquals(ResultType.INVALID, result.getType());
-    }
 
     @Test
     void shouldNotUpdateNullLatitude() {
-        Address address = new Address(0, "123 Test St", "Test City", "TS", "12345", 0, 43);
+        Address address = new Address(0, "123 Test St", "Test City", "TS", 0, 43);
         Result<Address> result = service.updateAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotUpdateNullLongitude() {
-        Address address = new Address(0, "123 Test St", "Test City", "TS", "12345", 43, 0);
+        Address address = new Address(0, "123 Test St", "Test City", "TS", 43, 0);
         Result<Address> result = service.updateAddress(address);
         assertEquals(ResultType.INVALID, result.getType());
     }
 
     @Test
     void shouldNotUpdateInvalidId() {
-        Address address = new Address(999, "123 Test St", "Test City", "TS", "12345", 43, 43);
+        Address address = new Address(999, "123 Test St", "Test City", "TS", 43, 43);
         Result<Address> result = service.updateAddress(address);
         assertEquals(ResultType.NOT_FOUND, result.getType());
     }

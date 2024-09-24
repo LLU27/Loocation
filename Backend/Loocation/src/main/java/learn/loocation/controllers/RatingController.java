@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/rating")
 public class RatingController {
@@ -17,13 +19,18 @@ public class RatingController {
         this.service = service;
     }
 
+    @GetMapping("/bathroom/{bathroomId}")
+    public List<Rating> findRatingsByBathroomId(@PathVariable int bathroomId) {
+        return service.findRatingsByBathroomId(bathroomId);
+    }
+
     @GetMapping("/{ratingId}")
-    public Rating findRatingById(int ratingId) {
+    public Rating findRatingById(@PathVariable int ratingId) {
         return service.findRatingById(ratingId);
     }
 
-    @PostMapping
-    public ResponseEntity<Object> addRating(Rating rating) {
+    @PostMapping("/add")
+    public ResponseEntity<Object> addRating(@RequestBody Rating rating) {
         Result<Rating> result = service.addRating(rating);
         if(result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);

@@ -1,37 +1,71 @@
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { BiMaleFemale } from 'react-icons/bi';
 import { FaBaby } from 'react-icons/fa6';
 import { BiAccessibility } from 'react-icons/bi';
 import { useAuth } from '../components/AuthContext';
+import axios from 'axios';
+import ReactStars from 'react-rating-stars-component';
 
 const BathroomDetail = () => {
-  const { bathroomId } = useParams();
   const location = useLocation();
-  const { user } = useAuth(); // Get the user from context
-  console.log(user);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [error, setError] = useState('');
   const bathroom = location.state;
+  const [bathroomId, setBathroomId] = useState(null); // Initialize as null to handle conditionals properly
+  const [ratings, setRatings] = useState([]);
 
-  const handleAddToList = async () => {
-    try {
-      const response = await fetch(`/add/bathroomId/${bathroomId}/userId/${user.id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          bathroomId: id,
-          userId: user.id,
-        }),
-      });
+  useEffect(() => {
+    const findBathroom = async () => {
+      try {
+        console.log(bathroom.latitude, bathroom.longitude);
+        const addressResponse = await axios.get(`http://localhost:8080/api/address/lat/${bathroom.latitude}/long/${bathroom.longitude}`);
 
-      if (response.ok) {
-        console.log(`Bathroom with ID: ${id} added to user ID: ${user.id}'s list`);
-      } else {
-        console.error('Failed to add bathroom to the list');
+        if (addressResponse.status === 200) {
+          const address = addressResponse.data;
+          console.log(address);
+          const bathroomResponse = await axios.get(`http://localhost:8080/api/bathroom/address/${address.addressId}`);
+
+          if (bathroomResponse.status === 200) {
+            const foundBathroom = bathroomResponse.data; // Rename for clarity
+            console.log(foundBathroom);
+            setBathroomId(foundBathroom.bathroomId);
+          } else {
+            console.error('Bathroom not found for the given address.');
+            setBathroomId(null);
+          }
+        } else {
+          console.error('Address not found for the given latitude and longitude.');
+          setBathroomId(null);
+        }
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching data:', err);
       }
-    } catch (error) {
-      console.error('Error while adding bathroom:', error);
-    }
+    };
+
+    findBathroom();
+  }, [bathroom.latitude, bathroom.longitude]);
+
+  useEffect(() => {
+    const fetchRatings = async () => {
+      if (bathroomId) {
+        try {
+          const response = await axios.get(`http://localhost:8080/api/rating/bathroom/${bathroomId}`);
+          setRatings(response.data);
+        } catch (err) {
+          setError(err.message);
+          console.log(err);
+        }
+      }
+    };
+
+    fetchRatings();
+  }, [bathroomId]);
+
+  const handleAddBathroom = () => {
+    navigate(`/add/bathroom/${bathroom.id}`, { state: bathroom });
   };
 
   return (
@@ -45,13 +79,13 @@ const BathroomDetail = () => {
           <div>
             <h2 className='text-2xl font-bold text-gray-800 mb-4'>{bathroom.name}</h2>
             <div className='mb-4'>
-              <p className=' text-gray-600 my-2'>
+              <p className='text-gray-600 my-2'>
                 <span className='font-semibold text-lg'>Address: </span>
                 {bathroom.street}
               </p>
               {bathroom.directions && (
                 <p className='text-gray-600 my-2'>
-                  <span className='font-semibold text-lg'>Direction: </span>
+                  <span className='font-semibold text-lg'>Directions: </span>
                   {bathroom.directions}
                 </p>
               )}
@@ -77,14 +111,30 @@ const BathroomDetail = () => {
                 href={`https://www.google.com/maps/dir/?api=1&destination=${bathroom.latitude},${bathroom.longitude}`}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='btn btn-primary text-white '
+                className='btn btn-primary text-white'
               >
                 Get Directions
               </a>
               {user && (
-                <button onClick={handleAddToList} className='btn btn-accent text-white mb-4'>
-                  Add to My Bathroom List
+                <button className='btn btn-accent text-white mb-4' onClick={handleAddBathroom}>
+                  Add Review
                 </button>
+              )}
+            </div>
+
+            <div className='mt-4'>
+              <h3 className='text-xl font-semibold'>Ratings:</h3>
+              {ratings.length > 0 ? (
+                <ul className='mt-2'>
+                  {ratings.map(rating => (
+                    <li key={rating.id} className='border-b py-2'>
+                      <ReactStars count={5} value={rating.rating} edit={false} size={24} activeColor='#ffd700' />{' '}
+                      <p className='text-gray-600'>{`Comment: ${rating.comment}`}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className='text-gray-600'>No ratings available for this bathroom.</p>
               )}
             </div>
           </div>

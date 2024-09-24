@@ -18,12 +18,25 @@ public class AddressController {
     }
 
     @GetMapping("/{addressId}")
-    public Address findAddressById(int addressId) {
+    public Address findAddressById(@PathVariable int addressId) {
         return service.findAddressById(addressId);
     }
+    @GetMapping("/findByStreet/{street}")
+    public Address findAddressByStreet(@PathVariable String street) {
+        return service.findAddressByStreet(street);
+    }
+    @GetMapping("/lat/{latitude}/long/{longitude}")
+    public ResponseEntity<Address> findByLatLong(@PathVariable double latitude, @PathVariable double longitude) {
+        Address address = service.findByLatLong(latitude, longitude);
+        if (address != null) {
+            return ResponseEntity.ok(address);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
 
-    @PostMapping
-    public ResponseEntity<Object> addAddress(Address address) {
+    @PostMapping("/add")
+    public ResponseEntity<Object> addAddress(@RequestBody Address address) {
         Result<Address> result = service.addAddress(address);
         if(result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);

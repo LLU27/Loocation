@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import java.util.HashMap;
+import java.util.List;
 
 @Repository
 public class RatingJdbcTemplateRepository implements RatingRepository {
@@ -22,6 +23,12 @@ public class RatingJdbcTemplateRepository implements RatingRepository {
                 .stream()
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public List<Rating> findRatingsByBathroomId(int bathroomId) {
+        final String sql = "select * from rating where bathroom_id = ?";
+        return jdbcTemplate.query(sql, new RatingMapper(), bathroomId);
     }
 
 

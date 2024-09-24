@@ -14,7 +14,6 @@ CREATE TABLE address (
   street VARCHAR(255) NOT NULL,
   city VARCHAR(100) NOT NULL,
   state VARCHAR(100) NOT NULL,
-  zipcode VARCHAR(20) NOT NULL,
   latitude DECIMAL(9, 6),
   longitude DECIMAL(9, 6)
 );
@@ -69,10 +68,10 @@ BEGIN
   ('alice_jones', 'alice.jones@example.com', 'password789');
 
   -- Insert sample data into `address`
-  INSERT INTO address (street, city, state, zipcode, latitude, longitude) VALUES
-  ('123 Main St', 'Buffalo', 'NY', '14201', 42.8877, -78.8784),
-  ('456 Elm St', 'Buffalo', 'NY', '14202', 42.8957, -78.8784),
-  ('789 Oak St', 'Buffalo', 'NY', '14203', 42.9047, -78.8784);
+  INSERT INTO address (street, city, state, latitude, longitude) VALUES
+  ('123 Main St', 'Buffalo', 'NY', 42.8877, -78.8784),
+  ('456 Elm St', 'Buffalo', 'NY', 42.8957, -78.8784),
+  ('789 Oak St', 'Buffalo', 'NY', 42.9047, -78.8784);
 
   -- Insert sample data into `bathroom`
   INSERT INTO bathroom (name, accessibility, changing_station, unisex, address_id) VALUES

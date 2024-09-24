@@ -19,7 +19,7 @@ const SignUp = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/user', {
+      const response = await fetch('http://localhost:8080/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const SignUp = () => {
       });
 
       if (response.ok) {
-        navigate('/home');
+        navigate('/login');
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'An error occurred while signing up.');

@@ -7,6 +7,8 @@ import Bathrooms from './view/Bathrooms';
 import Login from './view/Login';
 import SignUp from './view/SignUp';
 import BathroomDetail from './view/BathroomDetail';
+import AddBathroom from './view/AddBathroom';
+import UserBathroom from './view/UserBathroom';
 
 const App = () => {
   const [bathrooms, setBathrooms] = useState([]);
@@ -52,6 +54,8 @@ const App = () => {
         <Route path='/bathroom/:id' element={<BathroomDetail />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/add/bathroom/:id' element={<AddBathroom />} />
+        <Route path='/user/:id/bathrooms' element={<UserBathroom />} />
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
       {error && <p className='text-red-500'>{error}</p>}

@@ -29,8 +29,19 @@ public class BathroomController {
         return service.findBathroomById(bathroomId);
     }
 
-    @PostMapping
-    public ResponseEntity<Object> addBathroom(Bathroom bathroom) {
+    @GetMapping("/address/{addressId}")
+    public ResponseEntity<Bathroom> findByAddressId( @PathVariable int addressId) {
+    Bathroom bathroom = service.findByAddressId(addressId);
+        if (bathroom != null) {
+            return ResponseEntity.ok(bathroom);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+
+    @PostMapping("/add")
+    public ResponseEntity<Object> addBathroom(@RequestBody Bathroom bathroom) {
         Result<Bathroom> result = service.addBathroom(bathroom);
         if(result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
@@ -38,7 +49,7 @@ public class BathroomController {
         return ErrorResponse.build(result);
     }
 
-    @PutMapping
+    @PutMapping("/{bathroomId}")
     public ResponseEntity<Object> updateBathroom(@PathVariable int bathroomId, @RequestBody Bathroom bathroom) {
         if(bathroomId != bathroom.getBathroomId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);

@@ -34,7 +34,6 @@ class AddressJdbcTemplateRepositoryTest {
         address.setStreet("123 Test St");
         address.setCity("Test City");
         address.setState("TS");
-        address.setZipCode("12345");
         address.setLatitude(43);
         address.setLongitude(43);
         Address result = repository.addAddress(address);

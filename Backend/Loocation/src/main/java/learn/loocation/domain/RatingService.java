@@ -3,6 +3,8 @@ import learn.loocation.data.RatingRepository;
 import learn.loocation.models.Rating;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RatingService {
 
@@ -14,6 +16,10 @@ public class RatingService {
 
     public Rating findRatingById(int ratingId) {
         return repository.findByRatingId(ratingId);
+    }
+
+    public List<Rating> findRatingsByBathroomId(int bathroomId) {
+        return repository.findRatingsByBathroomId(bathroomId);
     }
 
     public Result<Rating> addRating(Rating rating) {
@@ -75,4 +81,6 @@ public class RatingService {
 
         return result;
     }
+
+
 }

@@ -7,19 +7,17 @@ public class Address {
     private String street;
     private String city;
     private String state;
-    private String zipCode;
     private double latitude;
     private double longitude;
 
     public Address() {
     }
 
-    public Address(int addressId, String street, String city, String state, String zipCode, double latitude, double longitude) {
+    public Address(int addressId, String street, String city, String state, double latitude, double longitude) {
         this.addressId = addressId;
         this.street = street;
         this.city = city;
         this.state = state;
-        this.zipCode = zipCode;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -56,14 +54,6 @@ public class Address {
         this.state = state;
     }
 
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
     public double getLatitude() {
         return latitude;
     }
@@ -85,11 +75,11 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return addressId == address.addressId && Double.compare(latitude, address.latitude) == 0 && Double.compare(longitude, address.longitude) == 0 && Objects.equals(street, address.street) && Objects.equals(city, address.city) && Objects.equals(state, address.state) && Objects.equals(zipCode, address.zipCode);
+        return addressId == address.addressId && Double.compare(latitude, address.latitude) == 0 && Double.compare(longitude, address.longitude) == 0 && Objects.equals(street, address.street) && Objects.equals(city, address.city) && Objects.equals(state, address.state);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(addressId, street, city, state, zipCode, latitude, longitude);
+        return Objects.hash(addressId, street, city, state, latitude, longitude);
     }
 }
