@@ -9,7 +9,7 @@ const BathroomCard = ({ id, name, address, latitude, longitude, street, city, st
 
   const handleNavigate = () => {
     navigate(`/bathroom/${id}`, {
-      state: { id, name, address, latitude, longitude, street, city, state, directions, unisex, changing_table, accessible },
+      state: { id, name, latitude, longitude, street, city, state, directions, unisex, changing_table, accessible },
     });
   };
 
@@ -21,7 +21,6 @@ const BathroomCard = ({ id, name, address, latitude, longitude, street, city, st
   return (
     <div className='bg-gray-700 text-white p-4 rounded-lg shadow-md min-w-[400px]'>
       <h2 className='text-xl font-bold'>{name}</h2>
-      <p className='mt-2'>{address}</p>
       <p>{street}</p>
       <p>{city}</p>
       <p className='mb-2'>{state}</p>

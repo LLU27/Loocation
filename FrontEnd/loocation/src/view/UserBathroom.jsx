@@ -6,10 +6,9 @@ const UserBathroom = () => {
   const { userId } = useAuth();
   const [bathroomIds, setBathroomIds] = useState([]);
   const [bathrooms, setBathrooms] = useState([]);
-  const [address, setAddress] = useState([]);
   const [error, setError] = useState('');
 
-  // Fetch user bathroom IDs
+
   useEffect(() => {
     const fetchUserBathroomIds = async () => {
       try {

@@ -13,22 +13,21 @@ const BathroomDetail = () => {
   const { user } = useAuth();
   const [error, setError] = useState('');
   const bathroom = location.state;
-  const [bathroomId, setBathroomId] = useState(null); 
+  const [bathroomId, setBathroomId] = useState(null);
   const [ratings, setRatings] = useState([]);
 
   useEffect(() => {
     const findBathroom = async () => {
       try {
-        console.log(bathroom.latitude, bathroom.longitude);
         const addressResponse = await axios.get(`http://localhost:8080/api/address/lat/${bathroom.latitude}/long/${bathroom.longitude}`);
 
         if (addressResponse.status === 200) {
           const address = addressResponse.data;
           console.log(address);
-          const bathroomResponse = await axios.get(`http://localhost:8080/api/bathroom/address/${address.addressId}`);
+          const bathroomResponse = await axios.get(`http://localhost:8080/api/bathroom/${bathroom.name}/address/${address.addressId}`);
 
           if (bathroomResponse.status === 200) {
-            const foundBathroom = bathroomResponse.data; 
+            const foundBathroom = bathroomResponse.data;
             console.log(foundBathroom);
             setBathroomId(foundBathroom.bathroomId);
           } else {
@@ -72,6 +71,9 @@ const BathroomDetail = () => {
     <div className='flex flex-col items-center mt-8'>
       <Link to='/bathrooms' className='text-blue-500 hover:underline mb-6'>
         ← Back to Bathrooms
+      </Link>
+      <Link to='/map' className='text-blue-500 hover:underline mb-6'>
+        ← Back to Map
       </Link>
 
       <div className='bg-white p-6 shadow-md rounded-lg max-w-md w-full'>

@@ -1,13 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BathroomCard from '../components/BathroomCard';
+import axios from 'axios';
+import { useAuth } from '../components/AuthContext';
 
 const Bathrooms = ({ bathrooms, onLooAround, loading, setLoading }) => {
+  const { userId } = useAuth();
+
+  const [bathroomIds, setBathroomIds] = useState([]);
+  const [userBathrooms, setUserBathrooms] = useState([]);
+  const [error, setError] = useState('');
   const [filters, setFilters] = useState({
     accessible: false,
     changingStation: false,
     unisex: false,
   });
+
+  useEffect(() => {
+    const fetchUserBathroomIds = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/userbathroom/user/${userId}`);
+        setBathroomIds(response.data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching user bathroom IDs: ', err);
+      }
+    };
+
+    fetchUserBathroomIds();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchBathrooms = async () => {
+      try {
+        const promises = bathroomIds.map(async ({ bathroomId }) => {
+          const response = await axios.get(`http://localhost:8080/api/bathroom/${bathroomId}`);
+          return response.data;
+        });
+        const results = await Promise.all(promises);
+        setUserBathrooms(results.filter(bathroom => bathroom !== null));
+      } catch (err) {
+        setError('Error fetching bathroom details');
+        console.error('Error fetching bathroom details: ', err);
+      }
+    };
+    if (bathroomIds.length > 0) {
+      fetchBathrooms();
+    }
+  }, [bathroomIds]);
 
   const handleLooAroundClick = () => {
     setLoading(true);
@@ -26,7 +66,9 @@ const Bathrooms = ({ bathrooms, onLooAround, loading, setLoading }) => {
     }
   };
 
-  const filteredBathrooms = bathrooms.filter(bathroom => {
+  const allBathrooms = [...userBathrooms, ...bathrooms];
+
+  const filteredBathrooms = allBathrooms.filter(bathroom => {
     const { accessible, changing_table, unisex } = bathroom;
     const matchesAccessible = !filters.accessible || accessible;
     const matchesChangingStation = !filters.changingStation || changing_table;

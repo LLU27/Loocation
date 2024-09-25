@@ -1,4 +1,4 @@
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ReactStars from 'react-rating-stars-component';
 import { useAuth } from '../components/AuthContext';
@@ -118,7 +118,7 @@ const AddBathroom = () => {
           <textarea
             value={comments}
             onChange={e => setComments(e.target.value)}
-            className='border rounded w-full py-2 px-3 text-gray-700 mb-3 text-white'
+            className='border rounded w-full py-2 px-3 text-gray-700 mb-3 bg-gray-100'
             placeholder='Enter your comments'
           ></textarea>
         </div>
