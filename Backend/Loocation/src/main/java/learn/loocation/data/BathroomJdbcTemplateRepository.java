@@ -40,14 +40,14 @@ public class BathroomJdbcTemplateRepository implements BathroomRepository {
     }
 
     @Override
-    public Bathroom findByAddressId(int addressId) {
+    public Bathroom findByAddressIdAndName(int addressId, String name) {
         final String sql = """
             select b.bathroom_id, b.name, b.accessibility, b.changing_station, b.unisex, a.address_id, a.street, a.city, a.state, a.latitude, a.longitude
             from bathroom b
             inner join address a on b.address_id = a.address_id
-            where a.address_id = ?;
+            where a.address_id = ? and b.name = ?;
             """;
-        return jdbcTemplate.query(sql, new BathroomMapper(), addressId).stream().findFirst().orElse(null);
+        return jdbcTemplate.query(sql, new BathroomMapper(), addressId,name).stream().findFirst().orElse(null);
     }
 
     @Override

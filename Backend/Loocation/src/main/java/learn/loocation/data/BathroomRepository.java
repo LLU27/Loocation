@@ -8,7 +8,7 @@ public interface BathroomRepository {
     List<Bathroom> findAllBathrooms();
 
     Bathroom findBathroomById(int bathroomId);
-    Bathroom findByAddressId(int addressId);
+    Bathroom findByAddressIdAndName(int addressId, String name);
     Bathroom addBathroom(Bathroom bathroom);
 
     boolean updateBathroom(Bathroom bathroom);

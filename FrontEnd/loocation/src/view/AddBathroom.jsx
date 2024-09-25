@@ -41,7 +41,7 @@ const AddBathroom = () => {
         } else {
           address = addressResponse.data;
         }
-        const bathroomResponse = await axios.get(`http://localhost:8080/api/bathroom/address/${address.addressId}`);
+        const bathroomResponse = await axios.get(`http://localhost:8080/api/bathroom/${name}/address/${address.addressId}`);
         const bathroomData = bathroomResponse.status;
         let bathroomId;
         if (bathroomData === 204) {

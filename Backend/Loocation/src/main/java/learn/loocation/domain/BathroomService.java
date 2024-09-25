@@ -28,8 +28,8 @@ public class BathroomService {
         return repository.findBathroomById(bathroomId);
     }
 
-    public Bathroom findByAddressId(int addressId) {
-        return repository.findByAddressId(addressId);
+    public Bathroom findByAddressIdAndName(int addressId,String name) {
+        return repository.findByAddressIdAndName(addressId, name);
     }
 
     public Result<Bathroom> addBathroom(Bathroom bathroom) {
@@ -38,7 +38,7 @@ public class BathroomService {
             return result;
         }
 
-        Bathroom existingBathroom = repository.findByAddressId(bathroom.getAddress().getAddressId());
+        Bathroom existingBathroom = repository.findByAddressIdAndName(bathroom.getAddress().getAddressId(), bathroom.getName());
         if (existingBathroom != null) {
             result.setPayload(existingBathroom);
             return result;

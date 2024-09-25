@@ -37,7 +37,7 @@ class BathroomJdbcTemplateRepositoryTest {
     @Test
     void shouldAddBathroom() {
         Bathroom bathroom = new Bathroom();
-        bathroom.setAddress(new Address(1, "123 Test St", "Test City", "TS", "12345", 43,43));
+        bathroom.setAddress(new Address(1, "123 Test St", "Test City", "TS", 43,43));
         bathroom.setAccessibility(true);
         bathroom.setUnisex(true);
         bathroom.setChangingStation(true);

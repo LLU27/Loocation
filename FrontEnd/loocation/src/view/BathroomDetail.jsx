@@ -13,7 +13,7 @@ const BathroomDetail = () => {
   const { user } = useAuth();
   const [error, setError] = useState('');
   const bathroom = location.state;
-  const [bathroomId, setBathroomId] = useState(null); // Initialize as null to handle conditionals properly
+  const [bathroomId, setBathroomId] = useState(null); 
   const [ratings, setRatings] = useState([]);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const BathroomDetail = () => {
           const bathroomResponse = await axios.get(`http://localhost:8080/api/bathroom/address/${address.addressId}`);
 
           if (bathroomResponse.status === 200) {
-            const foundBathroom = bathroomResponse.data; // Rename for clarity
+            const foundBathroom = bathroomResponse.data; 
             console.log(foundBathroom);
             setBathroomId(foundBathroom.bathroomId);
           } else {
@@ -128,7 +128,7 @@ const BathroomDetail = () => {
                 <ul className='mt-2'>
                   {ratings.map(rating => (
                     <li key={rating.id} className='border-b py-2'>
-                      <ReactStars count={5} value={rating.rating} edit={false} size={24} activeColor='#ffd700' />{' '}
+                      <ReactStars count={5} value={rating.rating} edit={false} size={24} activeColor='#ffd700' />
                       <p className='text-gray-600'>{`Comment: ${rating.comment}`}</p>
                     </li>
                   ))}

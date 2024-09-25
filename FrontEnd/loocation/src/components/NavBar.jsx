@@ -22,6 +22,9 @@ const NavBar = () => {
           <Link to='/bathrooms' className='hover:text-gray-400'>
             Bathrooms
           </Link>
+          <Link to='/map' className='hover:text-gray-400'>
+            Map
+          </Link>
           <Link to='/about' className='hover:text-gray-400'>
             About
           </Link>

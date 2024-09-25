@@ -21,8 +21,8 @@ BathroomService service;
 BathroomRepository repository;
 
 
-    Address address = new Address(1, "123 Test St", "Test City", "TS", "12345", 43, 43);
-    Address address2 = new Address(2, "321 Test St", "Test City", "TS", "12345", 43, 43);
+    Address address = new Address(1, "123 Test St", "Test City", "TS",  43, 43);
+    Address address2 = new Address(2, "321 Test St", "Test City", "TS", 43, 43);
 
     @Test
     void shouldFindAllBathrooms() {
@@ -45,7 +45,7 @@ BathroomRepository repository;
     @Test
     void shouldAddBathroom() {
         Bathroom expected = new Bathroom(1,"test bathroom",true, true, true, address);
-        Bathroom actual = new Bathroom(1,"test bathroom",true, true, true, address);
+        Bathroom actual = new Bathroom(0,"test bathroom",true, true, true, address);
         Result<Bathroom> expectedResult = new Result<>();
         expectedResult.setPayload(expected);
         when(repository.addBathroom(actual)).thenReturn(expected);

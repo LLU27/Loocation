@@ -25,13 +25,13 @@ public class BathroomController {
     }
 
     @GetMapping("/{bathroomId}")
-    public Bathroom findBathroomById(int bathroomId) {
+    public Bathroom findBathroomById(@PathVariable int bathroomId) {
         return service.findBathroomById(bathroomId);
     }
 
-    @GetMapping("/address/{addressId}")
-    public ResponseEntity<Bathroom> findByAddressId( @PathVariable int addressId) {
-    Bathroom bathroom = service.findByAddressId(addressId);
+    @GetMapping("/{name}/address/{addressId}")
+    public ResponseEntity<Bathroom> findByAddressIdAndName( @PathVariable int addressId,@PathVariable String name) {
+    Bathroom bathroom = service.findByAddressIdAndName(addressId,name);
         if (bathroom != null) {
             return ResponseEntity.ok(bathroom);
         } else {

@@ -9,17 +9,20 @@ import SignUp from './view/SignUp';
 import BathroomDetail from './view/BathroomDetail';
 import AddBathroom from './view/AddBathroom';
 import UserBathroom from './view/UserBathroom';
+import MapView from './view/MapView';
+import NewBathroom from './view/NewBathroom';
 
 const App = () => {
   const [bathrooms, setBathrooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [coords, setCoords] = useState({ lat: 42.96428, lng: -78.83144 });
 
   const handleLooAround = async (latitude, longitude) => {
     setLoading(true);
     setError(null);
-
-    const url = `https://public-bathrooms.p.rapidapi.com/location?lat=${latitude}&lng=${longitude}&page=1&per_page=10&offset=0`;
+    setCoords({ lat: latitude, lng: longitude });
+    const url = `https://public-bathrooms.p.rapidapi.com/location?lat=${latitude}&lng=${longitude}&page=1&per_page=50&offset=0`;
 
     const options = {
       method: 'GET',
@@ -45,7 +48,7 @@ const App = () => {
     <Router>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Home onLooAround={handleLooAround} loading={loading} setLoading={setLoading} />} />
+        <Route path='/' element={<Home onLooAround={handleLooAround} loading={loading} setLoading={setLoading} bathrooms={bathrooms} />} />
         <Route path='/about' element={<About />} />
         <Route
           path='/bathrooms'
@@ -56,6 +59,8 @@ const App = () => {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/add/bathroom/:id' element={<AddBathroom />} />
         <Route path='/user/:id/bathrooms' element={<UserBathroom />} />
+        <Route path='/bathroom/new' element={<NewBathroom />} />
+        <Route path='/map' element={<MapView bathrooms={bathrooms} coords={coords} />} />
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
       {error && <p className='text-red-500'>{error}</p>}

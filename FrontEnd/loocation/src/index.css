@@ -28,6 +28,17 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.map-container {
+  width: 500px;
+  height: 500px;
+  position: relative;
+  overflow: hidden;
 }
