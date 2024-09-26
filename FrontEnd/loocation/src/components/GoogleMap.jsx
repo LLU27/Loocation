@@ -26,8 +26,8 @@ const GoogleMap = ({ lat, long, bathrooms }) => {
 
   return (
     <APIProvider apiKey={apiKey}>
-      <div style={{ height: '100vh' }}>
-        <Map zoom={14} center={position} mapId={import.meta.env.VITE_MAP_ID_KEY} zoomControl={true} gestureHandling='greedy'>
+      <div style={{ height: '100vh', width: '100%' }}>
+        <Map mapId={import.meta.env.VITE_MAP_ID_KEY} defaultZoom={16} defaultCenter={position}>
           <AdvancedMarker
             position={position}
             onClick={() => {
@@ -35,7 +35,7 @@ const GoogleMap = ({ lat, long, bathrooms }) => {
               setSelectedBathroom({ name: 'Your Location' });
             }}
           >
-            <Pin scale={2} />
+            <Pin scale={1.5} />
           </AdvancedMarker>
 
           {bathrooms.map(bathroom => {
