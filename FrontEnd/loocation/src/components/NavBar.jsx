@@ -3,8 +3,8 @@ import logo from '../assets/logo.png';
 import { useAuth } from './AuthContext';
 
 const NavBar = () => {
-  const { user, logout } = useAuth();
-
+  const { user, userId, logout } = useAuth();
+  console.log(user);
   return (
     <nav className='bg-gray-800 text-white py-4'>
       <div className='container mx-auto flex items-center justify-between'>
@@ -14,7 +14,6 @@ const NavBar = () => {
           </Link>
         </div>
 
-        {/* Navigation Links */}
         <div className='space-x-6 flex justify-evenly w-1/3'>
           <Link to='/' className='hover:text-gray-400'>
             Home
@@ -25,12 +24,13 @@ const NavBar = () => {
           <Link to='/map' className='hover:text-gray-400'>
             Map
           </Link>
-          <Link to='/about' className='hover:text-gray-400'>
-            About
-          </Link>
+          {user && (
+            <Link to={`/user/${userId}/bathrooms`} className='hover:text-gray-400'>
+              Saved Bathrooms
+            </Link>
+          )}
         </div>
 
-        {/* Authentication Links */}
         <div className='space-x-4 w-1/3 flex justify-end items-center'>
           {user ? (
             <>

@@ -41,7 +41,7 @@ const GoogleMap = ({ lat, long, bathrooms }) => {
           {bathrooms.map(bathroom => {
             const bathroomPosition = { lat: bathroom.latitude, lng: bathroom.longitude };
 
-            return (
+            return ( 
               <AdvancedMarker
                 key={bathroom.id}
                 position={bathroomPosition}

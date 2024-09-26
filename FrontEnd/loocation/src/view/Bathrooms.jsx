@@ -67,7 +67,7 @@ const Bathrooms = ({ bathrooms, onLooAround, loading, setLoading }) => {
   };
 
   const allBathrooms = [...userBathrooms, ...bathrooms];
-
+  console.log('allBathrooms', allBathrooms);
   const filteredBathrooms = allBathrooms.filter(bathroom => {
     const { accessible, changing_table, unisex } = bathroom;
     const matchesAccessible = !filters.accessible || accessible;

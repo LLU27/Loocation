@@ -21,9 +21,19 @@ const BathroomCard = ({ id, name, address, latitude, longitude, street, city, st
   return (
     <div className='bg-gray-700 text-white p-4 rounded-lg shadow-md min-w-[400px]'>
       <h2 className='text-xl font-bold'>{name}</h2>
-      <p>{street}</p>
-      <p>{city}</p>
-      <p className='mb-2'>{state}</p>
+      {address ? (
+        <>
+          <p>{address.street}</p>
+          <p>{address.city}</p>
+          <p className='mb-2'>{address.state}</p>
+        </>
+      ) : (
+        <>
+          <p>{street}</p>
+          <p>{city}</p>
+          <p className='mb-2'>{state}</p>
+        </>
+      )}
       <div className='flex gap-2'>
         {unisex && <BiMaleFemale />}
         {changing_table && <FaBaby />}

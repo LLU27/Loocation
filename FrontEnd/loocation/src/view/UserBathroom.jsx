@@ -8,7 +8,6 @@ const UserBathroom = () => {
   const [bathrooms, setBathrooms] = useState([]);
   const [error, setError] = useState('');
 
-
   useEffect(() => {
     const fetchUserBathroomIds = async () => {
       try {
@@ -43,13 +42,12 @@ const UserBathroom = () => {
       fetchBathrooms();
     }
   }, [bathroomIds]);
-  
 
   return (
     <div>
-      <div className='max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg '>
+      <div className='max-w-3xl my-6 mx-auto p-6 bg-white rounded-lg shadow-lg '>
         <h2 className='text-3xl font-bold text-center mb-6 text-gray-800'>My Bathrooms</h2>
-        {error && <div className='bg-red-500 text-white p-2 rounded mb-4'>{error}</div>}
+
         <ul className='space-y-4'>
           {bathrooms.length > 0 ? (
             bathrooms.map(bathroom => (
