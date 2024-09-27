@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../components/AuthContext';
+import ReactStars from 'react-rating-stars-component';
 
 const NewBathroom = () => {
   const navigate = useNavigate();
@@ -15,10 +16,13 @@ const NewBathroom = () => {
   const [accessibility, setAccessibility] = useState('false');
   const [changingStation, setChangingStation] = useState('false');
   const [unisex, setUnisex] = useState('false');
-
+  const [rating, setRating] = useState(1);
+  const [comments, setComments] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  const onStarClick = newRating => {
+    setRating(newRating);
+  };
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
@@ -61,11 +65,18 @@ const NewBathroom = () => {
           address,
         };
 
-        console.log('New Bathroom Data:', bathroomDataToAdd);
-
         const addBathroomResponse = await axios.post('http://localhost:8080/api/bathroom/add', bathroomDataToAdd);
         bathroomId = addBathroomResponse.data.bathroomId;
         setSuccess('Bathroom added successfully!');
+
+        const ratingData = {
+          bathroomId,
+          userId,
+          rating,
+          comment: comments,
+        };
+
+        await axios.post('http://localhost:8080/api/rating/add', ratingData);
         setTimeout(() => {
           setSuccess('');
         }, 2000);
@@ -96,6 +107,8 @@ const NewBathroom = () => {
       setAccessibility('false');
       setChangingStation('false');
       setUnisex('false');
+      setRating(1);
+      setComments('');
     } catch (err) {
       setError('Failed to add bathroom. Please try again.');
       console.error(err);
@@ -235,6 +248,27 @@ const NewBathroom = () => {
                 <input className='radio radio-primary ' type='radio' value='false' checked={unisex === 'false'} onChange={() => setUnisex('false')} />
                 No
               </label>
+            </div>
+
+            <div className='mb-4'>
+              <label className='block text-gray-700 text-lg font-bold mb-2'>Rating</label>
+              <div className='flex gap-2'>
+                <ReactStars count={5} onChange={onStarClick} size={24} activeColor='#ffd700' />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor='comments' className='block text-gray-700 font-semibold'>
+                Comments
+              </label>
+              <textarea
+                id='comments'
+                value={comments}
+                onChange={e => setComments(e.target.value)}
+                className='w-full p-2 border border-gray-300 rounded bg-white text-gray-700'
+                rows='3'
+                placeholder='Add any comments...'
+              />
             </div>
           </div>
           <button type='submit' className='btn btn-primary w-full p-2 rounded transition duration-200 text-white'>

@@ -28,7 +28,7 @@ const Home = ({ onLooAround, loading, setLoading, bathrooms }) => {
         },
         {
           enableHighAccuracy: false,
-          timeout: 5000,
+          timeout: 8000,
           maximumAge: 0,
         }
       );

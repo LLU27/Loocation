@@ -92,7 +92,7 @@ const AddBathroom = () => {
       console.log('Rating submitted successfully', userBathroomResponse.data);
 
       setSuccessMessage('Rating added successfully!');
-    
+
       setTimeout(() => {
         navigate(`/user/${userId}/bathrooms`);
       }, 2000);
@@ -105,11 +105,11 @@ const AddBathroom = () => {
   return (
     <div className='flex flex-col items-center mt-8'>
       <h2 className='text-2xl font-bold mb-4'>Add Bathroom Review</h2>
-      <div className='mb-4'>
-        <label className='block text-lg font-bold mb-2 w-full'>Bathroom Name</label>
+      <div className='mb-4 w-[28rem]'>
+        <label className='block text-lg font-bold mb-2 w-full '>Bathroom Name</label>
         <p className='py-2 px-3 bg-gray-100 mb-3 rounded text-gray-700'>{name || 'N/A'}</p>
         <label className='block text-lg font-bold mb-2 w-full'>Address</label>
-        <p className='py-2 px-3 mb-3 bg-gray-100 rounded text-gray-700'>
+        <p className='py-2 px-3 mb-3 bg-gray-100 rounded text-gray-700 '>
           {street || 'N/A'},{city || 'N/A'}
         </p>
       </div>
@@ -133,7 +133,7 @@ const AddBathroom = () => {
           Submit
         </button>
       </form>
-      {successMessage && <div className='alert alert-success m-4'>{successMessage}</div>}
+      {successMessage && <div className='alert alert-success m-4 max-w-sm w-full'>{successMessage}</div>}
     </div>
   );
 };

@@ -82,7 +82,7 @@ const BathroomDetail = () => {
 
   return (
     <div className='flex flex-col items-center mt-8'>
-      <div className='flex justify-between w-full max-w-md'>
+      <div className='flex justify-between w-full max-w-lg'>
         <Link to='/bathrooms' className='text-[#747FFF] font-semibold hover:underline mb-6'>
           ← To Bathrooms
         </Link>
@@ -91,7 +91,7 @@ const BathroomDetail = () => {
         </Link>
       </div>
 
-      <div className='bg-white p-6 shadow-md rounded-lg max-w-md w-full'>
+      <div className='bg-white p-6 shadow-md rounded-lg max-w-[36rem] w-full'>
         {error && <p className='text-red-500'>{error}</p>}
 
         {(foundBathroom || bathroom) && (

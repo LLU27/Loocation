@@ -16,7 +16,7 @@ const App = () => {
   const [bathrooms, setBathrooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [coords, setCoords] = useState({ lat: null, lng: null });
+  const [coords, setCoords] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
     const getCurrentLocation = () => {

@@ -58,7 +58,7 @@ const UserBathroom = () => {
         });
 
         const results = await Promise.all(promises);
-        setBathrooms(results.filter(bathroom => bathroom !== null)); // Filter out nulls
+        setBathrooms(results.filter(bathroom => bathroom !== null)); 
       } catch (err) {
         setError('Error fetching bathrooms: ' + err.message);
         console.error('Error fetching bathrooms: ', err);
