@@ -81,7 +81,10 @@ const App = () => {
         <Route path='/add/bathroom/:id' element={<AddBathroom />} />
         <Route path='/user/:id/bathrooms' element={<UserBathroom />} />
         <Route path='/bathroom/new' element={<NewBathroom />} />
-        <Route path='/map' element={<MapView bathrooms={bathrooms} coords={coords} handleLooAround={handleLooAround} />} />
+        <Route
+          path='/map'
+          element={<MapView bathrooms={bathrooms} coords={coords} handleLooAround={handleLooAround} loading={loading} setLoading={setLoading} />}
+        />
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
       {error && <p className='text-red-500'>{error}</p>}

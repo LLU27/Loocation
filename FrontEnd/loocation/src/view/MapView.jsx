@@ -2,10 +2,9 @@ import GoogleMap from '../components/GoogleMap';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const MapView = ({ bathrooms, coords, handleLooAround }) => {
+const MapView = ({ bathrooms, coords, handleLooAround, loading, setLoading }) => {
   const [dbBathrooms, setDbBathrooms] = useState([]);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const MapView = ({ bathrooms, coords, handleLooAround }) => {
         position => {
           const { latitude, longitude } = position.coords;
           handleLooAround(latitude, longitude);
-          setLoading(false);
         },
         error => {
           setLoading(false);
@@ -46,7 +44,15 @@ const MapView = ({ bathrooms, coords, handleLooAround }) => {
   return (
     <div>
       {coords.lat && coords.lng ? (
-        <GoogleMap lat={coords.lat} long={coords.lng} bathrooms={bathrooms} dbBathrooms={dbBathrooms} handleLooAround={handleLooAround} />
+        <GoogleMap
+          lat={coords.lat}
+          long={coords.lng}
+          bathrooms={bathrooms}
+          dbBathrooms={dbBathrooms}
+          handleLooAround={handleLooAround}
+          loading={loading}
+          setLoading={setLoading}
+        />
       ) : (
         <>
           <p>Coordinates not available</p>

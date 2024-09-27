@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
 import { mapConfiguration } from '../../mapConfiguration';
 
-const GoogleMap = ({ lat, long, bathrooms, dbBathrooms, handleLooAround }) => {
+const GoogleMap = ({ lat, long, bathrooms, dbBathrooms, handleLooAround, setLoading, loading }) => {
   const [openPublicInfoWindow, setOpenPublicInfoWindow] = useState(false);
   const [openDbInfoWindow, setOpenDbInfoWindow] = useState(false);
   const [selectedPublicBathroom, setSelectedPublicBathroom] = useState(null);
   const [selectedDbBathroom, setSelectedDbBathroom] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const position = { lat, lng: long };
@@ -45,12 +44,11 @@ const GoogleMap = ({ lat, long, bathrooms, dbBathrooms, handleLooAround }) => {
         position => {
           const { latitude, longitude } = position.coords;
           handleLooAround(latitude, longitude);
-          setLoading(false);
         },
-        error => {
-          setLoading(false);
-          console.error('Error getting location:', error);
+        err => {
+          console.err('Error getting location:', err);
           setErrorMessage('Unable to retrieve your location. Please enable location services and try again.');
+          setLoading(false);
         }
       );
     } else {
@@ -80,7 +78,14 @@ const GoogleMap = ({ lat, long, bathrooms, dbBathrooms, handleLooAround }) => {
           onClick={handleLooAroundClick}
           disabled={loading}
         >
-          {loading ? 'Refreshing...' : 'Refresh'}
+          {loading ? (
+            <div className='flex gap-2 items-center'>
+              <p>Loading</p>
+              <div className='spinner h-4'></div>
+            </div>
+          ) : (
+            'Refresh'
+          )}
         </button>
         {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
         <Map
