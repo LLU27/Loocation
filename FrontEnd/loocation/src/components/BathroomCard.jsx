@@ -4,18 +4,48 @@ import { BiMaleFemale } from 'react-icons/bi';
 import { FaBaby } from 'react-icons/fa6';
 import { BiAccessibility } from 'react-icons/bi';
 
-const BathroomCard = ({ id, name, address, latitude, longitude, street, city, state, directions, unisex, changing_table, accessible }) => {
+const BathroomCard = ({
+  id,
+  bathroomId,
+  name,
+  address,
+  latitude,
+  longitude,
+  street,
+  city,
+  state,
+  directions,
+  unisex,
+  changing_table,
+  accessible,
+}) => {
   const navigate = useNavigate();
+
+  const resolvedLatitude = address?.latitude || latitude;
+  const resolvedLongitude = address?.longitude || longitude;
 
   const handleNavigate = () => {
     navigate(`/bathroom/${id}`, {
-      state: { id, name, latitude, longitude, street, city, state, directions, unisex, changing_table, accessible },
+      state: {
+        id,
+        bathroomId,
+        name,
+        latitude: resolvedLatitude,
+        longitude: resolvedLongitude,
+        street,
+        city,
+        state,
+        directions,
+        unisex,
+        changing_table,
+        accessible,
+      },
     });
   };
 
   const clickHandler = e => {
     e.stopPropagation();
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`);
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${resolvedLatitude},${resolvedLongitude}`);
   };
 
   return (
@@ -35,9 +65,9 @@ const BathroomCard = ({ id, name, address, latitude, longitude, street, city, st
         </>
       )}
       <div className='flex gap-2'>
-        {unisex && <BiMaleFemale />}
-        {changing_table && <FaBaby />}
-        {accessible && <BiAccessibility />}
+        {unisex && <BiMaleFemale className='icon' />}
+        {changing_table && <FaBaby className='icon' />}
+        {accessible && <BiAccessibility className='icon' />}
       </div>
       <div className='flex gap-4 my-4'>
         <button className='btn btn-primary text-white' onClick={clickHandler}>

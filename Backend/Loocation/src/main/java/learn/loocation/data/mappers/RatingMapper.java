@@ -14,6 +14,7 @@ public class RatingMapper implements RowMapper<Rating> {
         rating.setUserId(rs.getInt("user_id"));
         rating.setRating(rs.getInt("rating"));
         rating.setComment(rs.getString("comment"));
+
         return rating;
     }
 }

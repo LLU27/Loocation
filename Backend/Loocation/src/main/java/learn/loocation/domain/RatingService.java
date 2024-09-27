@@ -83,4 +83,7 @@ public class RatingService {
     }
 
 
+    public List<Rating> findRatingsByUserId(int userId) {
+        return repository.findRatingsByUserId(userId);
+    }
 }

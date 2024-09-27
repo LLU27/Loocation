@@ -27,7 +27,7 @@ const Home = ({ onLooAround, loading, setLoading, bathrooms }) => {
           setLoading(false);
         },
         {
-          enableHighAccuracy: true,
+          enableHighAccuracy: false,
           timeout: 5000,
           maximumAge: 0,
         }
@@ -39,13 +39,12 @@ const Home = ({ onLooAround, loading, setLoading, bathrooms }) => {
   };
 
   return (
-    <div
-      className='flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative gap-8'
-      style={{ backgroundImage: `url(${bg})` }}
-    >
-      <div className='absolute inset-0 bg-black opacity-50' />
-      <div className='relative z-10 p-8 rounded-lg shadow-lg max-w-md w-full bg-gray-800 bg-opacity-90'>
-        <h1 className='text-4xl font-bold mb-6 text-center text-white'>Find Your Dream Destination</h1>
+    <div className='flex flex-col items-center  min-h-screen bg-cover bg-center relative gap-8 ' style={{ backgroundImage: `url(${bg})` }}>
+      <div className='absolute inset-0 bg-black opacity-60 ' />
+
+      <h1 className=' text-7xl z-10 font-extrabold mt-[25vh]'>LOOCATION</h1>
+      <div className='relative z-10 p-8 rounded-lg shadow-lg max-w-md w-full bg-gray-800 bg-opacity-90  '>
+        <h2 className='text-3xl font-bold mb-6 text-center text-white'> It's Potty Time! 🎉 🎉</h2>
         <div className='flex flex-col gap-4'>
           <button
             onClick={handleLooAroundClick}

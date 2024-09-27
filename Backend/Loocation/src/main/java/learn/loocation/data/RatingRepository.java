@@ -13,4 +13,5 @@ public interface RatingRepository {
 
     List<Rating> findRatingsByBathroomId(int bathroomId);
 
+    List<Rating> findRatingsByUserId(int userId);
 }

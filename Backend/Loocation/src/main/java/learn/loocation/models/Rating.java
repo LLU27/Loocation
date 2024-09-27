@@ -8,6 +8,7 @@ public class Rating {
     private int userId;
     private int rating;
     private String comment;
+    
 
     public Rating() {
     }

@@ -6,11 +6,14 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
 
     try {
       const response = await fetch('http://localhost:8080/api/user/login', {
@@ -26,9 +29,12 @@ const Login = () => {
       }
 
       const data = await response.json();
-      console.log(data);
       login(data.username, data.userId);
-      navigate('/');
+      setSuccess('Successfully logged in! Redirecting...');
+
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (error) {
       setError(error.message);
     }
@@ -47,7 +53,8 @@ const Login = () => {
             <label className='block mb-1'>Password:</label>
             <input type='password' value={password} onChange={e => setPassword(e.target.value)} className='input input-bordered w-full' required />
           </div>
-          {error && <p className='text-red-500'>{error}</p>}
+          {error && <p className='alert alert-error'>{error}</p>}
+          {success && <p className='alert alert-success'>{success}</p>}
           <button type='submit' className='btn btn-primary w-full text-white mt-4'>
             Login
           </button>

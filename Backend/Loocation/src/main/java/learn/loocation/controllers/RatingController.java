@@ -24,6 +24,11 @@ public class RatingController {
         return service.findRatingsByBathroomId(bathroomId);
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Rating> findRatingsByUserId(@PathVariable int userId) {
+        return service.findRatingsByUserId(userId);
+    }
+
     @GetMapping("/{ratingId}")
     public Rating findRatingById(@PathVariable int ratingId) {
         return service.findRatingById(ratingId);

@@ -1,22 +1,70 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
-import logo from '../assets/logo.png';
+import { mapConfiguration } from '../../mapConfiguration';
 
-const GoogleMap = ({ lat, long, bathrooms }) => {
-  const [open, setOpen] = useState(false);
-  const [selectedBathroom, setSelectedBathroom] = useState(null);
+const GoogleMap = ({ lat, long, bathrooms, dbBathrooms, handleLooAround }) => {
+  const [openPublicInfoWindow, setOpenPublicInfoWindow] = useState(false);
+  const [openDbInfoWindow, setOpenDbInfoWindow] = useState(false);
+  const [selectedPublicBathroom, setSelectedPublicBathroom] = useState(null);
+  const [selectedDbBathroom, setSelectedDbBathroom] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const position = { lat, lng: long };
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    if (selectedBathroom) {
-      const { id, name, address, latitude, longitude, street, city, state, directions, unisex, changing_table, accessible } = selectedBathroom;
+    if (selectedPublicBathroom || selectedDbBathroom) {
+      const bathroom = selectedPublicBathroom || selectedDbBathroom;
+      const {
+        id,
+        name,
+        street = selectedPublicBathroom ? bathroom.street : bathroom.address.street,
+        city = selectedPublicBathroom ? bathroom.city : bathroom.address.city,
+        state = selectedPublicBathroom ? bathroom.state : bathroom.address.state,
+        latitude = selectedPublicBathroom ? bathroom.latitude : bathroom.address.latitude,
+        longitude = selectedPublicBathroom ? bathroom.longitude : bathroom.address.longitude,
+        directions,
+        unisex,
+        changing_table,
+        accessible,
+      } = bathroom;
 
       navigate(`/bathroom/${id}`, {
-        state: { id, name, address, latitude, longitude, street, city, state, directions, unisex, changing_table, accessible },
+        state: { id, name, street, city, state, latitude, longitude, directions, unisex, changing_table, accessible },
       });
+    }
+  };
+
+  const handleLooAroundClick = () => {
+    setLoading(true);
+    setErrorMessage('');
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          handleLooAround(latitude, longitude);
+          setLoading(false);
+        },
+        error => {
+          setLoading(false);
+          console.error('Error getting location:', error);
+          setErrorMessage('Unable to retrieve your location. Please enable location services and try again.');
+        }
+      );
+    } else {
+      setLoading(false);
+      setErrorMessage('Geolocation is not supported by this browser.');
+    }
+  };
+
+  const handleGoNow = () => {
+    if (selectedPublicBathroom || selectedDbBathroom) {
+      const bathroom = selectedPublicBathroom || selectedDbBathroom;
+      const lat = selectedPublicBathroom ? bathroom.latitude : bathroom.address.latitude;
+      const lng = selectedPublicBathroom ? bathroom.longitude : bathroom.address.longitude;
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
     }
   };
 
@@ -27,12 +75,27 @@ const GoogleMap = ({ lat, long, bathrooms }) => {
   return (
     <APIProvider apiKey={apiKey}>
       <div style={{ height: '100vh', width: '100%' }}>
-        <Map mapId={import.meta.env.VITE_MAP_ID_KEY} defaultZoom={16} defaultCenter={position}>
+        <button
+          className={`flex justify-center items-center h-10 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          onClick={handleLooAroundClick}
+          disabled={loading}
+        >
+          {loading ? 'Refreshing...' : 'Refresh'}
+        </button>
+        {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
+        <Map
+          mapId={import.meta.env.VITE_MAP_ID_KEY}
+          defaultZoom={14}
+          defaultCenter={position}
+          fullscreenControl={false}
+          styles={mapConfiguration.option.styles}
+        >
           <AdvancedMarker
             position={position}
             onClick={() => {
-              setOpen(true);
-              setSelectedBathroom({ name: 'Your Location' });
+              setOpenPublicInfoWindow(true);
+              setSelectedPublicBathroom({ name: 'Your Location' });
+              setOpenDbInfoWindow(false);
             }}
           >
             <Pin scale={1.5} />
@@ -41,36 +104,83 @@ const GoogleMap = ({ lat, long, bathrooms }) => {
           {bathrooms.map(bathroom => {
             const bathroomPosition = { lat: bathroom.latitude, lng: bathroom.longitude };
 
-            return ( 
+            return (
               <AdvancedMarker
                 key={bathroom.id}
                 position={bathroomPosition}
                 onClick={() => {
-                  setOpen(true);
-                  setSelectedBathroom(bathroom);
+                  setOpenPublicInfoWindow(true);
+                  setSelectedPublicBathroom(bathroom);
+                  setOpenDbInfoWindow(false);
                 }}
               >
-                <div className=' bg-[#FCD900]'>
+                <div className='bg-[#FCD900] flex items-center justify-center' style={{ width: '40px', height: '40px', borderRadius: '50%' }}>
                   <span className='text-3xl'>💩</span>
                 </div>
               </AdvancedMarker>
             );
           })}
 
-          {open && selectedBathroom && (
+          {dbBathrooms.map(bathroom => {
+            const bathroomPosition = { lat: bathroom.address.latitude, lng: bathroom.address.longitude };
+
+            return (
+              <AdvancedMarker
+                key={bathroom.bathroomId}
+                position={bathroomPosition}
+                onClick={() => {
+                  setOpenDbInfoWindow(true);
+                  setSelectedDbBathroom(bathroom);
+                  setOpenPublicInfoWindow(false);
+                }}
+              >
+                <div className='bg-[#FCD900] flex items-center justify-center' style={{ width: '40px', height: '40px', borderRadius: '50%' }}>
+                  <span className='text-3xl'>💩</span>
+                </div>
+              </AdvancedMarker>
+            );
+          })}
+
+          {openPublicInfoWindow && selectedPublicBathroom && (
             <InfoWindow
-              position={selectedBathroom ? { lat: selectedBathroom.latitude, lng: selectedBathroom.longitude } : position}
+              className='min-w-[150px]'
+              position={{ lat: selectedPublicBathroom.latitude, lng: selectedPublicBathroom.longitude }}
               onCloseClick={() => {
-                setOpen(false);
-                setSelectedBathroom(null);
+                setOpenPublicInfoWindow(false);
+                setSelectedPublicBathroom(null);
               }}
             >
               <div className='text-gray-700 text-sm'>
-                <h3 className='text-lg font-bold'>{selectedBathroom.name}</h3>
-                <p>{selectedBathroom.street}</p>
-                <p to={`/bathroom/${selectedBathroom.id}`} className='text-blue-600' onClick={handleNavigate}>
+                <h3 className='text-lg font-bold'>{selectedPublicBathroom.name}</h3>
+                <p>{selectedPublicBathroom.street || 'No street info'}</p>
+                <p className='text-blue-600 cursor-pointer' onClick={handleNavigate}>
                   More Details
                 </p>
+                <button className='mt-2 px-4 py-2 bg-[#747FFF] text-white rounded w-full' onClick={handleGoNow}>
+                  Go Now
+                </button>
+              </div>
+            </InfoWindow>
+          )}
+
+          {openDbInfoWindow && selectedDbBathroom && (
+            <InfoWindow
+              className='min-w-[150px]'
+              position={{ lat: selectedDbBathroom.address.latitude, lng: selectedDbBathroom.address.longitude }}
+              onCloseClick={() => {
+                setOpenDbInfoWindow(false);
+                setSelectedDbBathroom(null);
+              }}
+            >
+              <div className='text-gray-700 text-sm'>
+                <h3 className='text-lg font-bold'>{selectedDbBathroom.name}</h3>
+                <p>{selectedDbBathroom.address.street || 'No street info'}</p>
+                <p className='text-blue-600 cursor-pointer' onClick={handleNavigate}>
+                  More Details
+                </p>
+                <button className='mt-2 px-4 py-2 bg-[#747FFF] text-white rounded w-full' onClick={handleGoNow}>
+                  Go Now
+                </button>
               </div>
             </InfoWindow>
           )}

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Home from './view/Home';
 import About from './view/About';
 import Bathrooms from './view/Bathrooms';
@@ -16,7 +16,28 @@ const App = () => {
   const [bathrooms, setBathrooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [coords, setCoords] = useState({ lat: 42.96428, lng: -78.83144 });
+  const [coords, setCoords] = useState({ lat: null, lng: null });
+
+  useEffect(() => {
+    const getCurrentLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
+            setCoords({ lat: latitude, lng: longitude });
+          },
+          error => {
+            console.error('Error getting location:', error);
+            setError('Unable to retrieve your location.');
+          }
+        );
+      } else {
+        setError('Geolocation is not supported by this browser.');
+      }
+    };
+
+    getCurrentLocation();
+  }, []);
 
   const handleLooAround = async (latitude, longitude) => {
     setLoading(true);
@@ -60,7 +81,7 @@ const App = () => {
         <Route path='/add/bathroom/:id' element={<AddBathroom />} />
         <Route path='/user/:id/bathrooms' element={<UserBathroom />} />
         <Route path='/bathroom/new' element={<NewBathroom />} />
-        <Route path='/map' element={<MapView bathrooms={bathrooms} coords={coords} />} />
+        <Route path='/map' element={<MapView bathrooms={bathrooms} coords={coords} handleLooAround={handleLooAround} />} />
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
       {error && <p className='text-red-500'>{error}</p>}

@@ -31,6 +31,12 @@ public class RatingJdbcTemplateRepository implements RatingRepository {
         return jdbcTemplate.query(sql, new RatingMapper(), bathroomId);
     }
 
+    @Override
+    public List<Rating> findRatingsByUserId(int userId) {
+        final String sql = "select * from rating where user_id = ?";
+        return jdbcTemplate.query(sql, new RatingMapper(), userId);
+    }
+
 
     @Override
     public Rating addRating(Rating rating) {

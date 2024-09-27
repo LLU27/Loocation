@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../components/AuthContext';
 
 const NewBathroom = () => {
+  const navigate = useNavigate();
   const { userId } = useAuth();
   const [name, setName] = useState('');
   const [street, setStreet] = useState('');
@@ -64,6 +66,12 @@ const NewBathroom = () => {
         const addBathroomResponse = await axios.post('http://localhost:8080/api/bathroom/add', bathroomDataToAdd);
         bathroomId = addBathroomResponse.data.bathroomId;
         setSuccess('Bathroom added successfully!');
+        setTimeout(() => {
+          setSuccess('');
+        }, 2000);
+        setTimeout(() => {
+          navigate(`/user/${userId}/bathrooms`);
+        }, 2000);
       } else {
         bathroomId = bathroomResponse.data.bathroomId;
         setError('Bathroom already exists.');
@@ -80,7 +88,6 @@ const NewBathroom = () => {
       );
       console.log('User Bathroom Response:', userBathroomResponse.data);
 
-      // Reset form
       setName('');
       setStreet('');
       setCity('');

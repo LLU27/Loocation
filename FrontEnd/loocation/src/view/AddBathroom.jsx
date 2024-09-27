@@ -92,6 +92,7 @@ const AddBathroom = () => {
       console.log('Rating submitted successfully', userBathroomResponse.data);
 
       setSuccessMessage('Rating added successfully!');
+    
       setTimeout(() => {
         navigate(`/user/${userId}/bathrooms`);
       }, 2000);

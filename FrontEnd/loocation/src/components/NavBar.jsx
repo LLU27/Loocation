@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useAuth } from './AuthContext';
-
 const NavBar = () => {
   const { user, userId, logout } = useAuth();
-  console.log(user);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate('/');
+    logout();
+  };
   return (
     <nav className='bg-gray-800 text-white py-4'>
       <div className='container mx-auto flex items-center justify-between'>
@@ -35,7 +38,7 @@ const NavBar = () => {
           {user ? (
             <>
               <span className='text-white'>Hi, {user}</span>
-              <button onClick={logout} className='btn btn-primary text-white'>
+              <button onClick={handleLogout} className='btn btn-primary text-white'>
                 Logout
               </button>
             </>
