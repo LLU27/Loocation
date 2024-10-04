@@ -42,6 +42,7 @@ public class RatingJdbcTemplateRepository implements RatingRepository {
     public Rating addRating(Rating rating) {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("rating")
+                .usingColumns("user_id", "bathroom_id", "rating", "comment")
                 .usingGeneratedKeyColumns("rating_id");
 
         HashMap<String, Object> parameters = new HashMap<>();
